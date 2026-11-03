@@ -1,0 +1,1093 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Manga Library</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@600;800&family=Instrument+Sans:wght@400;600&display=swap">
+<style>
+:root{
+  --bg:#eceef3;--surface:#fbfbfd;--text:#161a2c;--muted:#656b82;--line:#d3d7e2;--accent:#34469f;--accent-text:#fff;--danger:#b4233a;
+  --serif:"Shippori Mincho B1","Hiragino Mincho ProN","Yu Mincho",Georgia,serif;
+  --sans:"Instrument Sans",system-ui,-apple-system,"Segoe UI",sans-serif;
+  box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  color-scheme:dark;--bg:#10131d;--surface:#181c2a;--text:#e7e9f4;--muted:#9096b0;--line:#2b3044;--accent:#8fa2ff;--accent-text:#0f1530;--danger:#ff7a8e;}}
+:root[data-theme="dark"]{
+  color-scheme:dark;--bg:#10131d;--surface:#181c2a;--text:#e7e9f4;--muted:#9096b0;--line:#2b3044;--accent:#8fa2ff;--accent-text:#0f1530;--danger:#ff7a8e;}
+*,*::before,*::after{box-sizing:inherit}
+html,body{margin:0;min-height:100%}
+body{background:var(--bg);color:var(--text);font:400 15px/1.5 var(--sans)}
+button,input{font:inherit;color:inherit}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+.top{display:flex;align-items:center;gap:16px;justify-content:space-between;padding:22px clamp(16px,4vw,48px) 8px;max-width:1280px;margin:0 auto}
+h1{font:800 clamp(26px,4vw,38px)/1.1 var(--serif);margin:0;letter-spacing:.01em}
+.sub{color:var(--muted);margin:4px 0 0;font-size:14px}
+.btn{display:inline-flex;align-items:center;gap:8px;min-height:42px;padding:0 20px;border-radius:999px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-text);font-weight:600;cursor:pointer}
+.btn:hover{filter:brightness(1.08)}
+.btn.ghost{background:transparent;color:var(--text);border-color:var(--line)}
+.actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
+.sources{max-width:1280px;margin:6px auto 0;padding:0 clamp(16px,4vw,48px);display:flex;align-items:center;gap:8px;overflow-x:auto;white-space:nowrap}
+.sources .lbl{color:var(--muted);font-size:13px;margin-right:4px}
+.sources .hint{color:var(--muted);font-size:13px}
+.tab{cursor:pointer;padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:transparent;font-size:14px}
+.tab small{color:var(--muted)}
+.tab:hover{border-color:var(--accent)}
+.tab.on{background:var(--accent);color:var(--accent-text);border-color:var(--accent)}
+.tab.on small{color:inherit;opacity:.85}
+.toolbar{max-width:1184px;margin:12px auto 0;padding:0 2px;display:flex;gap:10px;flex-wrap:wrap}
+.inp{min-height:38px;padding:0 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--text);max-width:100%}
+#search{flex:1;min-width:180px}
+.ser{color:var(--muted);font-size:12px;margin-top:-4px;overflow-wrap:anywhere}
+
+#detail{min-height:100vh}
+.dwrap{max-width:1100px;margin:0 auto;padding:18px clamp(16px,4vw,48px) 60px}
+.dgrid{display:grid;grid-template-columns:minmax(160px,260px) 1fr;gap:24px;margin-top:14px}
+@media(max-width:640px){.dgrid{grid-template-columns:1fr}.dleft{max-width:260px}}
+.dcover{display:block;width:100%;padding:0;border:0;background:var(--line);cursor:pointer;aspect-ratio:2/3;border-radius:3px 8px 8px 3px;overflow:hidden;box-shadow:0 6px 18px rgba(10,14,40,.22)}
+.dcover img{width:100%;height:100%;object-fit:cover;display:block}
+#dProgress{margin-top:8px;color:var(--muted);font-size:13px}
+.dtitle{font:800 clamp(22px,3.5vw,32px)/1.2 var(--serif);margin:0;overflow-wrap:anywhere}
+.dartist{font-weight:600;margin:4px 0 12px}
+.row{display:grid;grid-template-columns:96px 1fr;gap:8px;padding:3px 0;align-items:baseline}
+.row b{font-weight:600}
+.na{color:var(--muted)}
+.num{margin-left:2px;color:var(--muted);font-weight:600}
+.ddate{margin-top:10px;color:var(--muted)}
+.chip{display:inline-block;margin:2px 6px 2px 0;padding:1px 10px;border-radius:999px;border:1px solid var(--line);background:transparent;font-size:13px;cursor:pointer}
+button.chip:hover{border-color:var(--accent);color:var(--accent)}
+.chip.static{cursor:default}
+.btn.small{min-height:34px;padding:0 14px;font-size:14px;margin-top:14px}
+.frow{display:grid;grid-template-columns:110px 1fr;gap:8px;align-items:start;margin-bottom:8px}
+.frow>span:first-child{padding-top:8px}
+.frow .inp{width:100%}
+.frow .hint{display:block;font-size:12px;color:var(--muted);margin-top:2px}
+@media(max-width:640px){.frow{grid-template-columns:1fr}.frow>span:first-child{padding-top:0}}
+.fbtns{display:flex;gap:10px;margin-top:12px}
+.gbox{margin-top:26px;border:1px solid var(--line);border-radius:6px;background:var(--surface);padding:12px}
+.thumbs{display:grid;grid-template-columns:repeat(auto-fill,minmax(104px,1fr));gap:10px}
+.thumb{position:relative;aspect-ratio:2/3;padding:0;border:1px solid var(--line);background:var(--bg);border-radius:4px;overflow:hidden;cursor:pointer}
+.thumb:hover{border-color:var(--accent)}
+.thumb img{width:100%;height:100%;object-fit:contain;display:block}
+.thumb .tn{position:absolute;left:4px;bottom:4px;background:rgba(0,0,0,.65);color:#fff;font-size:11px;padding:0 5px;border-radius:4px}
+.pager{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin:14px 2px}
+.pager[hidden]{display:none}
+.pg{min-width:34px;min-height:34px;border-radius:8px;border:1px solid var(--line);background:transparent;cursor:pointer}
+.pg.on{background:var(--accent);color:var(--accent-text);border-color:var(--accent)}
+.related-h{font:800 24px var(--serif);margin:32px 0 12px;padding-bottom:6px;border-bottom:1px solid var(--line)}
+.related-h[hidden]{display:none}
+.rcard{display:grid;grid-template-columns:120px 1fr;gap:16px;padding:14px;margin-bottom:14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);cursor:pointer}
+.rcard:hover{border-color:var(--accent)}
+.rcard img{width:100%;aspect-ratio:2/3;object-fit:cover;border-radius:4px;background:var(--line);display:block}
+.rbody h3{font:800 18px/1.25 var(--serif);margin:0;overflow-wrap:anywhere}
+.rdate{margin-top:8px;font-weight:600;color:var(--muted)}
+#exportDlg{border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--text);padding:22px;max-width:420px;width:calc(100% - 32px)}
+#exportDlg::backdrop{background:rgba(0,0,0,.5)}
+#exportDlg h2{font:800 20px var(--serif);margin:0 0 6px}
+#exportDlg p{margin:0 0 16px;color:var(--muted);font-size:14px}
+#exportDlg .opt{display:block;width:100%;text-align:left;margin-bottom:10px;padding:12px 14px;border-radius:10px;border:1px solid var(--line);background:transparent;cursor:pointer}
+#exportDlg .opt:hover{border-color:var(--accent)}
+#exportDlg .opt b{display:block}
+#exportDlg .opt span{color:var(--muted);font-size:13px}
+
+main{max-width:1280px;margin:0 auto;padding:16px clamp(16px,4vw,48px) 56px}
+#dropZone{max-width:1184px;margin:14px auto 0;padding:14px 18px;border:1.5px dashed var(--line);border-radius:12px;color:var(--muted);text-align:center;transition:background .15s,border-color .15s}
+#dropZone.dragover{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent);color:var(--text)}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:28px 22px}
+.item{position:relative;display:flex;flex-direction:column;gap:8px}
+.cover{all:unset;cursor:pointer;display:block;position:relative;aspect-ratio:2/3;border-radius:3px 8px 8px 3px;overflow:hidden;background:var(--line);
+  box-shadow:inset 7px 0 0 rgba(0,0,0,.28),inset 8px 0 0 rgba(255,255,255,.14),0 6px 18px rgba(10,14,40,.22)}
+.cover:hover{transform:translateY(-3px)}
+.cover{transition:transform .15s}
+.cover img{width:100%;height:100%;object-fit:cover;display:block}
+.bar{position:absolute;left:0;right:0;bottom:0;height:4px;background:rgba(0,0,0,.35)}
+.bar i{display:block;height:100%;background:var(--accent)}
+.name{font:600 15px/1.3 var(--serif);margin:0;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.meta{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:13px;min-height:24px}
+.del{all:unset;cursor:pointer;color:var(--muted);font-size:13px;padding:2px 6px;border-radius:6px}
+.del:hover{color:var(--danger)}
+.del.confirm{color:var(--danger);font-weight:600}
+
+.empty{border:1.5px dashed var(--line);border-radius:14px;padding:64px 24px;text-align:center;color:var(--muted);max-width:560px;margin:40px auto}
+.empty h2{font:800 22px var(--serif);color:var(--text);margin:0 0 8px}
+.empty p{margin:0 0 20px}
+
+#reader{position:fixed;inset:0;z-index:20;background:#090b12;color:#e7e9f4;display:flex;flex-direction:column;
+  padding:env(safe-area-inset-top,0px) 0 env(safe-area-inset-bottom,0px)}
+#reader[hidden]{display:none}
+#rbar{display:flex;align-items:center;gap:14px;padding:10px 16px;background:#10131d;border-bottom:1px solid #232840;font-size:14px}
+#reader.bare #rbar{display:none}
+#rbar .t{font:600 15px var(--serif);flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+#rbar button{all:unset;cursor:pointer;padding:6px 12px;border-radius:999px;border:1px solid #2f3556;white-space:nowrap}
+#rbar button:hover{background:#1d2238}
+#rbar label{display:flex;align-items:center;gap:6px;cursor:pointer;white-space:nowrap}
+#stage{flex:1;min-height:0;display:flex;align-items:flex-start;justify-content:flex-start;position:relative;cursor:crosshair;user-select:none;overflow:auto;touch-action:pan-x pan-y}
+#stage .media{max-width:none;max-height:none;width:auto;height:auto;object-fit:contain;display:block;flex:none;margin:auto}
+#stage .media[hidden]{display:none}
+#zoomControls{display:flex;align-items:center;gap:6px;flex-wrap:wrap}
+#zoomControls button,#zoomControls select{min-height:32px;text-align:center;padding:4px 8px}
+#zoomLevel{min-width:48px;text-align:center;color:#c6cbe0;font-variant-numeric:tabular-nums}
+#zoomStepLabel{display:flex;align-items:center;gap:4px;font-size:12px;color:#c6cbe0;white-space:nowrap}
+#zoomStep{background:#181c2a;color:#e7e9f4;border:1px solid #2f3556;border-radius:7px}
+@media(max-width:700px){#rbar{gap:6px;padding:7px;flex-wrap:wrap}#rbar button{padding:5px 7px}#rbar label{font-size:12px}#zoomLevel{min-width:40px}#zoomStepLabel{font-size:11px}}
+#msg{position:absolute;color:#9096b0}
+
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:30;background:var(--text);color:var(--bg);padding:10px 18px;border-radius:10px;max-width:90vw;font-size:14px}
+.toast[hidden]{display:none}
+@media (prefers-reduced-motion:reduce){.cover{transition:none}.cover:hover{transform:none}}
+</style>
+</head>
+<body>
+<div id="libraryView">
+<header class="top">
+  <div>
+    <h1>Manga Library</h1>
+    <p class="sub" id="count">Loading…</p>
+  </div>
+  <div class="actions">
+    <button class="btn ghost" id="exportBtn" type="button">Export library</button>
+    <label class="btn ghost" id="backupBtn" tabindex="0">Import backup<input id="backupPicker" type="file" accept=".json,application/json" hidden></label>
+    <label class="btn" id="importBtn" tabindex="0">Import manga folders<input id="picker" type="file" webkitdirectory directory multiple hidden></label>
+  </div>
+</header>
+<nav class="sources" id="sources" role="tablist" aria-label="Read from"></nav>
+<dialog id="exportDlg">
+  <h2>Export library</h2>
+  <p>Saves a .json file you can load again with “Import backup”.</p>
+  <button class="opt" id="expFull" type="button"><b>Full backup</b><span>Folders, covers, every page, tags and reading progress. Can be a very large file.</span></button>
+  <button class="opt" id="expLite" type="button"><b>Tags &amp; progress only</b><span>Folder list, tags, series, dates and reading progress. Small file; applies to folders already in the library.</span></button>
+  <button class="btn ghost" id="expCancel" type="button">Cancel</button>
+</dialog>
+<div id="dropZone" aria-label="Multiple folder import">Or drag and drop multiple manga folders here to import them together. You can also choose a parent folder with the Import button.</div>
+<div class="toolbar">
+  <input class="inp" id="search" type="search" placeholder="Search title, series, artist, characters, tags…" aria-label="Search library">
+  <select class="inp" id="sort" aria-label="Sort">
+    <option value="added">Newest added</option>
+    <option value="date">Folder date</option>
+    <option value="title">Title A–Z</option>
+    <option value="series">Series</option>
+  </select>
+</div>
+<main><div id="shelf"></div></main>
+</div>
+
+<section id="detail" hidden aria-label="Folder details">
+  <div class="dwrap">
+    <button class="btn ghost" id="dBack" type="button">← Library</button>
+    <div class="dgrid">
+      <div class="dleft">
+        <button class="dcover" id="dCover" type="button" title="Continue reading"><img id="dCoverImg" alt=""></button>
+        <div id="dProgress"></div>
+      </div>
+      <div class="dright" id="dInfo"></div>
+    </div>
+    <div class="gbox"><div class="thumbs" id="thumbs"></div></div>
+    <nav class="pager" id="pager" aria-label="Page gallery pages"></nav>
+    <h2 class="related-h" id="relH" hidden>Related Galleries</h2>
+    <div id="related"></div>
+  </div>
+</section>
+
+<section id="reader" hidden aria-label="Manga reader">
+  <div id="rbar">
+    <button id="back">← Back</button>
+    <span class="t" id="rtitle"></span>
+    <span id="rpos"></span>
+    <div id="zoomControls" aria-label="Zoom controls">
+      <button id="zoomOut" title="Zoom out" aria-label="Zoom out">−</button>
+      <span id="zoomLevel">100%</span>
+      <button id="zoomIn" title="Zoom in" aria-label="Zoom in">+</button>
+      <button id="zoomReset" title="Fit to screen">Fit</button>
+      <label id="zoomStepLabel" title="Amount changed by each zoom action">Step
+        <select id="zoomStep" aria-label="Zoom increment">
+          <option value="0.10">10%</option>
+          <option value="0.25" selected>25%</option>
+          <option value="0.50">50%</option>
+          <option value="0.75">75%</option>
+          <option value="1">100%</option>
+        </select>
+      </label>
+    </div>
+    <label><input type="checkbox" id="rtl"> Right to left</label>
+  </div>
+  <div id="stage"><img id="page" class="media" alt=""><video id="video" class="media" controls loop muted playsinline hidden></video><span id="msg"></span></div>
+</section>
+<div class="toast" id="toast" hidden></div>
+
+<script>
+"use strict";
+const $ = s => document.querySelector(s);
+const extOf = n => (n.split(".").pop() || "").toLowerCase();
+const MIME = {png:"image/png",jpg:"image/jpeg",jpeg:"image/jpeg",gif:"image/gif",webp:"image/webp",avif:"image/avif",bmp:"image/bmp",mp4:"video/mp4"};
+const isVideo = f => (MIME[extOf(f.name)] || "").startsWith("video/");
+const collator = new Intl.Collator(undefined, {numeric:true, sensitivity:"base"});
+
+/* ── Storage (IndexedDB: covers + pages stay on this device) ── */
+const dbp = new Promise((res, rej) => {
+  const r = indexedDB.open("manga-library", 1);
+  r.onupgradeneeded = () => {
+    r.result.createObjectStore("manga", {keyPath:"id"});
+    r.result.createObjectStore("pages", {keyPath:["mangaId","index"]});
+  };
+  r.onsuccess = () => res(r.result);
+  r.onerror = () => rej(r.error);
+});
+const wrap = r => new Promise((res, rej) => { r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); });
+const done = t => new Promise((res, rej) => { t.oncomplete = res; t.onerror = t.onabort = () => rej(t.error); });
+try { navigator.storage && navigator.storage.persist && navigator.storage.persist(); } catch (_) {}
+
+function toast(text) {
+  const t = $("#toast"); t.textContent = text; t.hidden = false;
+  clearTimeout(toast.id); toast.id = setTimeout(() => { t.hidden = true; }, 3500);
+}
+
+/* ── Import: parent folders, or multiple folders dropped together ── */
+// Map of already-imported folders (id -> record) so unchanged folders can be skipped.
+async function existingFolders() {
+  const db = await dbp;
+  const list = await wrap(db.transaction("manga").objectStore("manga").getAll());
+  return new Map(list.map(m => [m.id, m]));
+}
+
+// Grab a still frame from an MP4 to use as a cover.
+function videoFrame(file) {
+  return new Promise(resolve => {
+    const url = URL.createObjectURL(file), v = document.createElement("video");
+    let finished = false;
+    const finish = blob => {
+      if (finished) return; finished = true;
+      clearTimeout(timer); URL.revokeObjectURL(url); v.removeAttribute("src"); v.load(); resolve(blob);
+    };
+    const timer = setTimeout(() => finish(null), 8000);
+    v.muted = true; v.preload = "auto"; v.playsInline = true;
+    v.onloadeddata = () => { v.currentTime = Math.min(0.5, (isFinite(v.duration) ? v.duration : 1) / 2) || 0.1; };
+    v.onseeked = () => {
+      try {
+        const sc = Math.min(1, 600 / Math.max(v.videoWidth, v.videoHeight));
+        const c = document.createElement("canvas");
+        c.width = Math.max(1, Math.round(v.videoWidth * sc)); c.height = Math.max(1, Math.round(v.videoHeight * sc));
+        c.getContext("2d").drawImage(v, 0, 0, c.width, c.height);
+        c.toBlob(b => finish(b), "image/jpeg", 0.8);
+      } catch (_) { finish(null); }
+    };
+    v.onerror = () => finish(null);
+    v.src = url;
+  });
+}
+function placeholderCover() {
+  const c = document.createElement("canvas"); c.width = 400; c.height = 600;
+  const g = c.getContext("2d"); g.fillStyle = "#2b3044"; g.fillRect(0, 0, 400, 600);
+  g.fillStyle = "#e7e9f4"; g.beginPath(); g.moveTo(160, 240); g.lineTo(160, 360); g.lineTo(260, 300); g.closePath(); g.fill();
+  return new Promise(res => c.toBlob(res, "image/png"));
+}
+
+const filePaths = new WeakMap();   // dropped File -> its path inside the dropped folder
+const pathOf = f => filePaths.get(f) || f.webkitRelativePath || f.name;
+
+// "Main/Sub/page.jpg" -> main folder "Main" (a "Read from" tab) containing manga "Sub".
+// "Sub/page.jpg" -> a single manga folder with no main folder.
+function classifyPath(parts) {
+  if (parts.length >= 3) return {source:parts[0], title:parts[1]};
+  if (parts.length === 2) return {source:"", title:parts[0]};
+  return {source:"", title:"Imported Manga"};
+}
+const folderId = (source, title) => (source ? source.toLowerCase() + "/" : "") + title.toLowerCase();
+function findExisting(existing, source, title) {
+  let prev = existing.get(folderId(source, title));
+  if (!prev && source) {            // library imported before main folders existed
+    const legacy = existing.get(title.toLowerCase());
+    if (legacy && !legacy.source) prev = legacy;
+  }
+  return prev || null;
+}
+const pendingUpgrades = new Map();
+// True when this folder is already imported with the same page count (nothing to do).
+function skipIfSame(existing, source, title, count) {
+  const prev = findExisting(existing, source, title);
+  if (!prev || prev.pageCount !== count) return false;
+  if (source && !prev.source) { prev.source = source; pendingUpgrades.set(prev.id, prev); }
+  return true;
+}
+async function flushUpgrades() {
+  if (!pendingUpgrades.size) return 0;
+  const n = pendingUpgrades.size, db = await dbp, t = db.transaction("manga", "readwrite");
+  pendingUpgrades.forEach(r => t.objectStore("manga").put(r));
+  pendingUpgrades.clear();
+  await done(t);
+  return n;
+}
+
+// groups: Map of key -> {title, source, files}
+async function importGroups(groups, skipped = 0, existing = null) {
+  const usable = [...groups.values()].map(g => ({...g, files:g.files.filter(f => MIME[extOf(f.name)])})).filter(g => g.files.length);
+  if (!usable.length) {
+    const up = await flushUpgrades(); if (up) render();
+    toast(skipped ? "All " + skipped + " folders are already imported — nothing to do." : "No supported pages found.");
+    return;
+  }
+  const db = await dbp;
+  existing = existing || await existingFolders();
+  let imported = 0;
+  for (const {title, source, files} of usable) {
+    // Same folder already imported with the same number of pages: skip all processing.
+    if (skipIfSame(existing, source, title, files.length)) { skipped++; continue; }
+    const prev = findExisting(existing, source, title);
+    const id = prev ? prev.id : folderId(source, title);
+    files.sort((a, b) => collator.compare(pathOf(a), pathOf(b)));
+    const typed = f => f.slice(0, f.size, MIME[extOf(f.name)]);
+    toast("Importing " + title + " (" + files.length + " pages)… " + imported + " done" + (skipped ? ", " + skipped + " skipped" : ""));
+    const coverFile = files.find(f => extOf(f.name) === "png") || files.find(f => !isVideo(f));
+    const coverBlob = coverFile ? typed(coverFile) : ((await videoFrame(typed(files[0]))) || await placeholderCover());
+    // Date tag = newest modified time among the folder's files.
+    const modified = files.reduce((mx, f) => Math.max(mx, f.lastModified || 0), 0) || Date.now();
+    const rec = ensureMeta({
+      ...(prev || {}), id, title: prev ? prev.title : title, source, cover:coverBlob, pageCount:files.length,
+      lastPage: prev ? Math.min(prev.lastPage || 0, files.length - 1) : 0,
+      added: prev ? prev.added : Date.now(), date: modified
+    });
+    const t = db.transaction(["manga", "pages"], "readwrite");
+    const pages = t.objectStore("pages");
+    pages.delete(IDBKeyRange.bound([id, 0], [id, Number.MAX_SAFE_INTEGER]));
+    files.forEach((f, i) => pages.put({mangaId:id, index:i, name:pathOf(f), blob:typed(f)}));
+    t.objectStore("manga").put(rec);
+    await done(t);
+    existing.set(id, rec);
+    imported++;
+  }
+  const upgraded = await flushUpgrades();
+  toast((imported ? "Imported " + imported + (imported === 1 ? " folder" : " folders") : "Nothing new to import") +
+        (skipped ? " · skipped " + skipped + " already imported" : ""));
+  if (imported || upgraded) render();
+}
+
+async function importFolder(fileList) {
+  const files = [...fileList].filter(f => MIME[extOf(f.name)]);
+  const groups = new Map();
+  for (const file of files) {
+    const {source, title} = classifyPath(pathOf(file).split("/").filter(Boolean));
+    const key = source + "\u0000" + title;
+    if (!groups.has(key)) groups.set(key, {title, source, files:[]});
+    groups.get(key).files.push(file);
+  }
+  await importGroups(groups);
+}
+
+// Read dropped directory trees. Only lists entries first, so folders that are already
+// imported can be skipped without opening every file.
+async function listFileEntries(entry) {
+  if (entry.isFile) return MIME[extOf(entry.name)] ? [entry] : [];
+  if (!entry.isDirectory) return [];
+  const reader = entry.createReader(), out = [];
+  for (;;) {
+    const batch = await new Promise((res, rej) => reader.readEntries(res, rej));
+    if (!batch.length) break;
+    for (const list of await Promise.all(batch.map(listFileEntries))) for (const x of list) out.push(x);
+  }
+  return out;
+}
+const fileOf = e => new Promise((res, rej) => e.file(res, rej));
+
+const dropZone = $("#dropZone");
+["dragenter", "dragover"].forEach(type => dropZone.addEventListener(type, e => { e.preventDefault(); dropZone.classList.add("dragover"); }));
+["dragleave", "drop"].forEach(type => dropZone.addEventListener(type, e => { e.preventDefault(); dropZone.classList.remove("dragover"); }));
+dropZone.addEventListener("drop", async e => {
+  try {
+    const items = [...(e.dataTransfer.items || [])];
+    const entries = items.map(item => item.webkitGetAsEntry && item.webkitGetAsEntry()).filter(Boolean);
+    const groups = new Map();
+    let skipped = 0, existing = null;
+    if (entries.length) {
+      existing = await existingFolders();
+      toast("Scanning folders…");
+      const pending = new Map();
+      for (const entry of entries) {
+        for (const fe of await listFileEntries(entry)) {
+          const parts = fe.fullPath.split("/").filter(Boolean);
+          const {source, title} = classifyPath(parts);
+          const key = source + "\u0000" + title;
+          if (!pending.has(key)) pending.set(key, {title, source, items:[]});
+          pending.get(key).items.push({fe, path:parts.join("/")});
+        }
+      }
+      for (const [key, g] of pending) {
+        if (skipIfSame(existing, g.source, g.title, g.items.length)) { skipped++; continue; }
+        const files = await Promise.all(g.items.map(async ({fe, path}) => { const f = await fileOf(fe); filePaths.set(f, path); return f; }));
+        groups.set(key, {title:g.title, source:g.source, files});
+      }
+    } else {
+      const files = [...(e.dataTransfer.files || [])].filter(f => MIME[extOf(f.name)]);
+      if (files.length) groups.set("\u0000Imported Manga", {title:"Imported Manga", source:"", files});
+    }
+    await importGroups(groups, skipped, existing);
+  } catch (err) { console.error(err); toast("Folder drop failed. Try dropping the folders from your file manager."); }
+});
+$("#picker").addEventListener("change", async e => {
+  try { await importFolder(e.target.files); }
+  catch (err) { console.error(err); toast("Import failed. The browser may be out of storage space."); }
+  e.target.value = "";
+});
+$("#importBtn").addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); $("#picker").click(); } });
+
+/* ── Export / import backup (.json) ──
+   One record per line, but the whole file is still valid JSON:
+   {"format":...,"manga":[ <one manga per line> ],"pages":[ <one page per line, base64> ]}
+   so huge libraries can be written and read as a stream. */
+const META_KEYS = ["source","artist","group","type","language","series","seriesNumber","characters","tags","date"];
+const pickMeta = m => { const o = {}; for (const k of META_KEYS) if (m[k] !== undefined) o[k] = m[k]; return o; };
+const blobToB64 = blob => new Promise((res, rej) => {
+  const r = new FileReader();
+  r.onload = () => res(r.result.slice(r.result.indexOf(",") + 1));
+  r.onerror = () => rej(r.error);
+  r.readAsDataURL(blob);
+});
+function b64ToBlob(b64, type) {
+  const bin = atob(b64), u = new Uint8Array(bin.length);
+  for (let i = 0; i < bin.length; i++) u[i] = bin.charCodeAt(i);
+  return new Blob([u], {type});
+}
+
+async function exportLibrary(withImages) {
+  const stamp = new Date().toISOString().slice(0, 10);
+  const name = "manga-library-" + (withImages ? "full" : "progress") + "-" + stamp + ".json";
+  let write, close;
+  try {
+    if (window.showSaveFilePicker) {            // streams straight to disk (Chrome / Edge)
+      const handle = await showSaveFilePicker({suggestedName:name, types:[{description:"Manga library backup", accept:{"application/json":[".json"]}}]});
+      const w = await handle.createWritable();
+      write = c => w.write(c); close = () => w.close();
+    } else {                                    // fallback: build in memory, then download
+      const parts = [];
+      write = c => { parts.push(c); };
+      close = () => {
+        const a = document.createElement("a");
+        a.href = URL.createObjectURL(new Blob(parts, {type:"application/json"})); a.download = name;
+        document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 10000);
+      };
+    }
+  } catch (err) { if (err.name !== "AbortError") { console.error(err); toast("Could not start the export."); } return; }
+
+  try {
+    const db = await dbp;
+    const list = await wrap(db.transaction("manga").objectStore("manga").getAll());
+    list.sort((a, b) => a.added - b.added);
+    await write('{"format":"manga-library","version":1,"exported":' + JSON.stringify(new Date().toISOString()) +
+                ',"includesImages":' + withImages + ',"manga":[\n');
+    for (let i = 0; i < list.length; i++) {
+      const m = list[i];
+      const rec = {id:m.id, title:m.title, pageCount:m.pageCount, lastPage:m.lastPage || 0, added:m.added, ...pickMeta(m)};
+      if (withImages) rec.cover = {type:m.cover.type, data:await blobToB64(m.cover)};
+      await write((i ? "," : "") + JSON.stringify(rec) + "\n");
+    }
+    await write('],"pages":[\n');
+    if (withImages) {
+      let first = true;
+      for (let i = 0; i < list.length; i++) {
+        const m = list[i];
+        toast("Exporting " + (i + 1) + " / " + list.length + ": " + m.title);
+        for (let p = 0; p < m.pageCount; p++) {
+          const rec = await wrap(db.transaction("pages").objectStore("pages").get([m.id, p]));
+          if (!rec) continue;
+          await write((first ? "" : ",") + JSON.stringify({mangaId:m.id, index:p, name:rec.name, type:rec.blob.type, data:await blobToB64(rec.blob)}) + "\n");
+          first = false;
+        }
+      }
+    }
+    await write("]}\n");
+    await close();
+    toast("Exported " + list.length + (list.length === 1 ? " folder" : " folders") + " to " + name);
+  } catch (err) { console.error(err); toast("Export failed: " + (err.message || err)); }
+}
+
+async function* readLines(file) {
+  const reader = file.stream().getReader(), dec = new TextDecoder();
+  let buf = "";
+  for (;;) {
+    const {done:finished, value} = await reader.read();
+    if (finished) break;
+    buf += dec.decode(value, {stream:true});
+    let i;
+    while ((i = buf.indexOf("\n")) >= 0) { yield buf.slice(0, i); buf = buf.slice(i + 1); }
+  }
+  buf += dec.decode();
+  if (buf) yield buf;
+}
+
+async function importBackup(file) {
+  const db = await dbp;
+  const existing = await existingFolders();
+  const manga = [], wanted = new Map(), counts = new Map();
+  let section = "header", includesImages = false, skipped = 0, batch = [], batchSize = 0, sawHeader = false;
+  const flush = async () => {
+    if (!batch.length) return;
+    const t = db.transaction("pages", "readwrite"), st = t.objectStore("pages");
+    batch.forEach(r => st.put(r));
+    await done(t); batch = []; batchSize = 0;
+  };
+
+  toast("Reading backup…");
+  for await (const raw of readLines(file)) {
+    const line = raw.trim();
+    if (!line) continue;
+    if (section === "header") {
+      if (!line.startsWith('{"format"') || !line.includes('"manga-library"')) throw new Error("Not a Manga Library backup file.");
+      includesImages = /"includesImages":true/.test(line); sawHeader = true; section = "manga"; continue;
+    }
+    if (line.startsWith("],") && line.includes('"pages":[')) {
+      // Decide what to import now; unchanged folders are skipped (same name + page count).
+      if (includesImages) {
+        for (const m of manga) {
+          const prev = existing.get(m.id);
+          if (prev && prev.pageCount === m.pageCount) { skipped++; continue; }
+          wanted.set(m.id, m);
+        }
+        const t = db.transaction("pages", "readwrite");
+        for (const id of wanted.keys()) t.objectStore("pages").delete(IDBKeyRange.bound([id, 0], [id, Number.MAX_SAFE_INTEGER]));
+        await done(t);
+      }
+      section = "pages"; continue;
+    }
+    if (line === "]}") break;
+    if (section === "manga") { manga.push(JSON.parse(line.replace(/^,/, ""))); continue; }
+    if (section === "pages" && wanted.size) {
+      // Cheap check on the line's start so skipped folders aren't parsed at all.
+      const mm = line.match(/^,?\{"mangaId":("(?:[^"\\]|\\.)*"),/);
+      if (!mm) continue;
+      const id = JSON.parse(mm[1]);
+      if (!wanted.has(id)) continue;
+      const rec = JSON.parse(line.replace(/^,/, ""));
+      const blob = b64ToBlob(rec.data, rec.type);
+      batch.push({mangaId:id, index:rec.index, name:rec.name, blob});
+      batchSize += blob.size;
+      counts.set(id, (counts.get(id) || 0) + 1);
+      if (batchSize > 40e6) { toast("Restoring " + wanted.get(id).title + "…"); await flush(); }
+    }
+  }
+  if (!sawHeader) throw new Error("Not a Manga Library backup file.");
+  await flush();
+
+  let imported = 0, failed = 0, progress = 0, missing = 0;
+  if (includesImages) {
+    const t = db.transaction(["manga", "pages"], "readwrite");
+    for (const [id, m] of wanted) {
+      if (counts.get(id) === m.pageCount && m.cover) {
+        t.objectStore("manga").put({id, title:m.title, cover:b64ToBlob(m.cover.data, m.cover.type), pageCount:m.pageCount, lastPage:m.lastPage || 0, added:m.added || Date.now(), ...pickMeta(m)});
+        imported++;
+      } else {   // incomplete folder: drop any partial pages
+        t.objectStore("pages").delete(IDBKeyRange.bound([id, 0], [id, Number.MAX_SAFE_INTEGER]));
+        failed++;
+      }
+    }
+    await done(t);
+  } else {
+    const t = db.transaction("manga", "readwrite");
+    for (const m of manga) {
+      const prev = existing.get(m.id);
+      if (!prev) { missing++; continue; }
+      prev.lastPage = Math.max(0, Math.min(m.lastPage || 0, prev.pageCount - 1));
+      Object.assign(prev, pickMeta(m));
+      t.objectStore("manga").put(prev); progress++;
+    }
+    await done(t);
+  }
+  const bits = includesImages
+    ? [imported + " restored", skipped && skipped + " skipped (already imported)", failed && failed + " incomplete"]
+    : [progress + " progress restored", missing && missing + " not in library"];
+  toast("Backup: " + bits.filter(Boolean).join(" · "));
+  render();
+}
+
+const exportDlg = $("#exportDlg");
+$("#exportBtn").addEventListener("click", () => exportDlg.showModal());
+$("#expCancel").addEventListener("click", () => exportDlg.close());
+$("#expFull").addEventListener("click", () => { exportDlg.close(); exportLibrary(true); });
+$("#expLite").addEventListener("click", () => { exportDlg.close(); exportLibrary(false); });
+$("#backupPicker").addEventListener("change", async e => {
+  const f = e.target.files[0];
+  try { if (f) await importBackup(f); }
+  catch (err) { console.error(err); toast("Import failed: " + (err.message || err)); }
+  e.target.value = "";
+});
+$("#backupBtn").addEventListener("keydown", e => { if (e.key === "Enter" || e.key === " ") { e.preventDefault(); $("#backupPicker").click(); } });
+
+/* ── Library ── */
+function h(tag, attrs = {}, ...kids) {
+  const e = document.createElement(tag);
+  for (const [k, v] of Object.entries(attrs)) {
+    if (k === "class") e.className = v;
+    else if (k.startsWith("on")) e.addEventListener(k.slice(2), v);
+    else if (v !== false && v != null) e.setAttribute(k, v);
+  }
+  e.append(...kids.flat().filter(x => x != null && x !== false));
+  return e;
+}
+const NONE = "\u0001none";
+let library = [], coverUrls = [], activeSource = "", libScroll = 0;
+try { activeSource = localStorage.getItem("manga-source") || ""; } catch (_) {}
+const searchEl = $("#search"), sortEl = $("#sort");
+try { sortEl.value = localStorage.getItem("manga-sort") || "added"; } catch (_) {}
+if (!sortEl.value) sortEl.value = "added";
+
+function ensureMeta(m) {
+  for (const k of ["artist","group","type","language","series","seriesNumber","source"]) if (typeof m[k] !== "string") m[k] = "";
+  for (const k of ["characters","tags"]) if (!Array.isArray(m[k])) m[k] = [];
+  return m;
+}
+const numLabel = n => /^\d+(\.\d+)?$/.test(n) ? "#" + n : n;
+const seriesLabel = m => !m.series ? "N/A" : (m.seriesNumber ? m.series + " — " + numLabel(m.seriesNumber) : m.series);
+const fmtDate = ms => ms ? new Date(ms).toLocaleString(undefined, {year:"numeric", month:"short", day:"numeric", hour:"numeric", minute:"2-digit"}) : "N/A";
+const haystack = m => [m.title, m.artist, m.group, m.type, m.language, m.series, m.seriesNumber, m.source, ...m.characters, ...m.tags].join("\n").toLowerCase();
+const SORTS = {
+  added: (a, b) => b.added - a.added,
+  date: (a, b) => (b.date || 0) - (a.date || 0),
+  title: (a, b) => collator.compare(a.title, b.title),
+  series: (a, b) => (!a.series - !b.series) || collator.compare(a.series, b.series) || collator.compare(a.seriesNumber, b.seriesNumber) || collator.compare(a.title, b.title)
+};
+
+async function render() {
+  const db = await dbp;
+  library = (await wrap(db.transaction("manga").objectStore("manga").getAll())).map(ensureMeta);
+  renderSources();
+  renderShelf();
+}
+
+// "Read from" tabs: one per main folder that held multiple sub folders.
+function renderSources() {
+  const nav = $("#sources"), counts = new Map();
+  let loose = 0;
+  for (const m of library) { if (m.source) counts.set(m.source, (counts.get(m.source) || 0) + 1); else loose++; }
+  if (activeSource && activeSource !== NONE && !counts.has(activeSource)) activeSource = "";
+  if (activeSource === NONE && (!loose || !counts.size)) activeSource = "";
+  const add = (key, label, n) => nav.append(h("button", {
+    class:"tab" + (activeSource === key ? " on" : ""), type:"button", role:"tab", "aria-selected":String(activeSource === key),
+    onclick:() => { activeSource = key; try { localStorage.setItem("manga-source", key); } catch (_) {} renderSources(); renderShelf(); }
+  }, label, h("small", {}, " " + n)));
+  nav.replaceChildren(h("span", {class:"lbl"}, "Read from"));
+  add("", "All", library.length);
+  [...counts.keys()].sort(collator.compare).forEach(k => add(k, k, counts.get(k)));
+  if (loose && counts.size) add(NONE, "Single folders", loose);
+  if (!counts.size) nav.append(h("span", {class:"hint"}, "Import a folder that contains several sub folders to get a tab for it."));
+}
+
+function renderShelf() {
+  coverUrls.forEach(u => URL.revokeObjectURL(u)); coverUrls = [];
+  const q = searchEl.value.trim().toLowerCase();
+  let list = library.filter(m => activeSource === "" || (activeSource === NONE ? !m.source : m.source === activeSource));
+  if (q) list = list.filter(m => haystack(m).includes(q));
+  list.sort(SORTS[sortEl.value] || SORTS.added);
+  const filtered = list.length !== library.length;
+  $("#count").textContent = library.length ? (filtered ? list.length + " of " + library.length : library.length) + (library.length === 1 ? " title" : " titles") : "Nothing here yet";
+  const shelf = $("#shelf");
+
+  if (!library.length) {
+    shelf.innerHTML = '<div class="empty"><h2>Your shelf is empty</h2><p>Choose a parent folder containing manga subfolders, or drag several manga folders onto the drop area above. The first PNG becomes the cover, GIF pages animate, and MP4 clips play in the reader.</p><label class="btn">Import manga folders<input type="file" webkitdirectory directory multiple hidden id="picker2"></label></div>';
+    $("#picker2").addEventListener("change", async e => {
+      try { await importFolder(e.target.files); } catch (err) { console.error(err); toast("Import failed. The browser may be out of storage space."); }
+      e.target.value = "";
+    });
+    return;
+  }
+  if (!list.length) { shelf.replaceChildren(h("div", {class:"empty"}, h("h2", {}, "No matches"), h("p", {}, "Nothing in this tab matches your search."))); return; }
+
+  const grid = h("div", {class:"grid"});
+  for (const m of list) {
+    const url = URL.createObjectURL(m.cover); coverUrls.push(url);
+    const item = h("div", {class:"item"});
+    const cover = h("button", {class:"cover", title:"Open " + m.title});
+    const bar = h("div", {class:"bar"}, h("i", {style:"width:" + Math.round(((m.lastPage + 1) / m.pageCount) * 100) + "%"}));
+    cover.append(h("img", {src:url, alt:m.title + " cover"}), bar);
+    cover.addEventListener("click", () => openDetail(m));
+    const del = h("button", {class:"del"}, "Remove");
+    del.addEventListener("click", async () => {
+      if (!del.classList.contains("confirm")) {
+        del.classList.add("confirm"); del.textContent = "Confirm?";
+        setTimeout(() => { del.classList.remove("confirm"); del.textContent = "Remove"; }, 3000);
+        return;
+      }
+      const d = await dbp, t = d.transaction(["manga","pages"], "readwrite");
+      t.objectStore("manga").delete(m.id);
+      t.objectStore("pages").delete(IDBKeyRange.bound([m.id, 0], [m.id, Number.MAX_SAFE_INTEGER]));
+      await done(t); toast("Removed ‘" + m.title + "’"); render();
+    });
+    item.append(cover, h("h3", {class:"name"}, m.title));
+    if (m.series) item.append(h("div", {class:"ser"}, seriesLabel(m)));
+    item.append(h("div", {class:"meta"}, h("span", {}, m.lastPage > 0 ? "Page " + (m.lastPage + 1) + " of " + m.pageCount : m.pageCount + " pages"), del));
+    grid.append(item);
+  }
+  shelf.replaceChildren(grid);
+}
+let searchTimer;
+searchEl.addEventListener("input", () => { clearTimeout(searchTimer); searchTimer = setTimeout(renderShelf, 150); });
+sortEl.addEventListener("change", () => { try { localStorage.setItem("manga-sort", sortEl.value); } catch (_) {} renderShelf(); });
+
+/* ── Detail page: info, tags, page gallery, related folders ── */
+let dm = null, thumbPage = 0, thumbToken = 0, detailCoverUrl = null, relUrls = [];
+const thumbUrls = new Map();
+const THUMBS_PER_PAGE = 36;
+
+function openDetail(m) {
+  if (!$("#libraryView").hidden) libScroll = window.scrollY;
+  cleanupDetail();
+  dm = ensureMeta(m); thumbPage = 0;
+  $("#libraryView").hidden = true; $("#detail").hidden = false;
+  window.scrollTo(0, 0);
+  detailCoverUrl = URL.createObjectURL(m.cover);
+  $("#dCoverImg").src = detailCoverUrl; $("#dCoverImg").alt = m.title + " cover";
+  renderInfo(); updateProgress(); renderThumbs(); renderRelated();
+}
+function cleanupDetail() {
+  thumbToken++;
+  thumbUrls.forEach(u => u && URL.revokeObjectURL(u)); thumbUrls.clear();
+  relUrls.forEach(u => URL.revokeObjectURL(u)); relUrls = [];
+  if (detailCoverUrl) { URL.revokeObjectURL(detailCoverUrl); detailCoverUrl = null; }
+  dm = null;
+}
+function showLibrary() {
+  cleanupDetail();
+  $("#detail").hidden = true; $("#libraryView").hidden = false;
+  render().then(() => window.scrollTo(0, libScroll));
+}
+function filterBy(text) {   // clicking a tag searches the whole library for it
+  searchEl.value = text; activeSource = ""; libScroll = 0;
+  showLibrary();
+}
+function updateProgress() {
+  if (!dm) return;
+  $("#dProgress").textContent = dm.lastPage > 0 ? "Continue from page " + (dm.lastPage + 1) + " of " + dm.pageCount : dm.pageCount + (dm.pageCount === 1 ? " page" : " pages");
+}
+$("#dBack").addEventListener("click", showLibrary);
+$("#dCover").addEventListener("click", () => dm && openManga(dm));
+
+function renderInfo() {
+  const m = dm, na = () => h("span", {class:"na"}, "N/A");
+  const chip = v => h("button", {class:"chip", type:"button", onclick:() => filterBy(v)}, v);
+  const chips = list => list.length ? list.map(chip) : na();
+  const row = (label, ...content) => h("div", {class:"row"}, h("b", {}, label), h("span", {}, ...content));
+  $("#dInfo").replaceChildren(
+    h("h1", {class:"dtitle"}, m.title),
+    h("div", {class:"dartist"}, m.artist ? chip(m.artist) : "N/A"),
+    row("Group", m.group ? chip(m.group) : na()),
+    row("Type", m.type ? chip(m.type) : na()),
+    row("Language", m.language ? chip(m.language) : na()),
+    row("Series", m.series ? [chip(m.series), m.seriesNumber ? h("span", {class:"num"}, numLabel(m.seriesNumber)) : null] : na()),
+    row("Characters", chips(m.characters)),
+    row("Tags", chips(m.tags)),
+    row("Read from", m.source ? chip(m.source) : na()),
+    h("div", {class:"ddate"}, fmtDate(m.date)),
+    h("button", {class:"btn ghost small", type:"button", onclick:renderForm}, "Edit details")
+  );
+}
+
+function renderForm() {
+  const m = dm;
+  const text = (val, attrs = {}) => h("input", {type:"text", class:"inp", value:val || "", ...attrs});
+  const fld = (label, input, hint) => h("label", {class:"frow"}, h("span", {}, label), h("span", {}, input, hint ? h("span", {class:"hint"}, hint) : null));
+  const dl = (id, opts) => h("datalist", {id}, opts.map(o => h("option", {value:o})));
+  const pad = n => String(n).padStart(2, "0");
+  const toLocal = ms => { if (!ms) return ""; const d = new Date(ms); return d.getFullYear() + "-" + pad(d.getMonth() + 1) + "-" + pad(d.getDate()) + "T" + pad(d.getHours()) + ":" + pad(d.getMinutes()); };
+  const seriesNames = [...new Set(library.map(x => x.series).filter(Boolean))].sort(collator.compare);
+
+  const title = text(m.title), artist = text(m.artist), group = text(m.group);
+  const type = text(m.type, {list:"typeList", placeholder:"Manga, Doujinshi, Image Set…"});
+  const language = text(m.language, {list:"langList"});
+  const series = text(m.series, {list:"seriesList", placeholder:"Series title"});
+  const number = text(m.seriesNumber, {placeholder:"3, Vol. 3, Special…"});
+  const chars = text(m.characters.join(", ")), tags = text(m.tags.join(", "));
+  const date = h("input", {type:"datetime-local", class:"inp", value:toLocal(m.date)});
+
+  const toList = v => { const seen = new Set(); return v.split(/[,\n]/).map(x => x.trim()).filter(x => x && !seen.has(x.toLowerCase()) && seen.add(x.toLowerCase())); };
+  const save = async () => {
+    const when = new Date(date.value).getTime();
+    Object.assign(m, {
+      title:title.value.trim() || m.title, artist:artist.value.trim(), group:group.value.trim(), type:type.value.trim(),
+      language:language.value.trim(), series:series.value.trim(), seriesNumber:number.value.trim(),
+      characters:toList(chars.value), tags:toList(tags.value), date:date.value && !isNaN(when) ? when : m.date
+    });
+    try {
+      const db = await dbp, t = db.transaction("manga", "readwrite");
+      t.objectStore("manga").put(m); await done(t); toast("Saved");
+    } catch (err) { console.error(err); toast("Could not save changes."); }
+    renderInfo(); renderRelated();
+  };
+  $("#dInfo").replaceChildren(
+    fld("Title", title), fld("Artist", artist), fld("Group", group), fld("Type", type), fld("Language", language),
+    fld("Series", series, "Folders with the same series title show up in each other’s Related Galleries."),
+    fld("Number", number, "A number or any text, e.g. 3, Vol. 3, Special."),
+    fld("Characters", chars, "Separate with commas."), fld("Tags", tags, "Separate with commas."),
+    fld("Date", date, "Filled in automatically from the folder’s last modified time."),
+    dl("typeList", ["Manga","Doujinshi","Artist CG","Game CG","Image Set","Webtoon","Video"]),
+    dl("langList", ["日本語","English","中文","한국어","Español","Français"]),
+    dl("seriesList", seriesNames),
+    h("div", {class:"fbtns"},
+      h("button", {class:"btn", type:"button", onclick:save}, "Save"),
+      h("button", {class:"btn ghost", type:"button", onclick:renderInfo}, "Cancel"))
+  );
+}
+
+// Small thumbnails so a folder with hundreds of big pages stays light.
+async function makeThumb(blob) {
+  if (blob.type.startsWith("video/")) { const b = await videoFrame(blob); return b ? URL.createObjectURL(b) : null; }
+  let bmp;
+  try { bmp = await createImageBitmap(blob, {resizeWidth:260, resizeQuality:"medium"}); }
+  catch (_) { try { bmp = await createImageBitmap(blob); } catch (__) { return URL.createObjectURL(blob); } }
+  const sc = Math.min(1, 260 / bmp.width), c = document.createElement("canvas");
+  c.width = Math.max(1, Math.round(bmp.width * sc)); c.height = Math.max(1, Math.round(bmp.height * sc));
+  c.getContext("2d").drawImage(bmp, 0, 0, c.width, c.height);
+  if (bmp.close) bmp.close();
+  const out = await new Promise(r => c.toBlob(r, "image/jpeg", 0.8));
+  return out ? URL.createObjectURL(out) : URL.createObjectURL(blob);
+}
+async function getThumb(m, i) {
+  if (thumbUrls.has(i)) return thumbUrls.get(i);
+  const db = await dbp;
+  const rec = await wrap(db.transaction("pages").objectStore("pages").get([m.id, i]));
+  if (!rec) return null;
+  const url = await makeThumb(rec.blob);
+  if (!dm || dm.id !== m.id) { if (url) URL.revokeObjectURL(url); return null; }
+  thumbUrls.set(i, url);
+  return url;
+}
+
+async function renderThumbs() {
+  const token = ++thumbToken, m = dm, n = m.pageCount;
+  const pages = Math.max(1, Math.ceil(n / THUMBS_PER_PAGE));
+  thumbPage = Math.min(thumbPage, pages - 1);
+  const start = thumbPage * THUMBS_PER_PAGE, end = Math.min(n, start + THUMBS_PER_PAGE);
+  const grid = $("#thumbs"), cells = [];
+  grid.replaceChildren();
+  for (let i = start; i < end; i++) {
+    const im = h("img", {alt:"Page " + (i + 1), decoding:"async"});
+    grid.append(h("button", {class:"thumb", type:"button", title:"Open page " + (i + 1), onclick:() => openManga(m, i)}, im, h("span", {class:"tn"}, String(i + 1))));
+    cells.push([i, im]);
+  }
+  renderPager(pages);
+  let next = 0;
+  const worker = async () => {
+    while (token === thumbToken) {
+      const k = next++; if (k >= cells.length) return;
+      const [i, im] = cells[k];
+      try { const url = await getThumb(m, i); if (url && token === thumbToken) im.src = url; } catch (_) {}
+    }
+  };
+  await Promise.all([worker(), worker(), worker(), worker()]);
+}
+function renderPager(pages) {
+  const nav = $("#pager"); nav.replaceChildren();
+  nav.hidden = pages <= 1;
+  if (pages <= 1) return;
+  const nums = new Set([0, pages - 1]);
+  for (let i = thumbPage - 2; i <= thumbPage + 2; i++) if (i >= 0 && i < pages) nums.add(i);
+  let prev = -1;
+  [...nums].sort((a, b) => a - b).forEach(i => {
+    if (prev >= 0 && i - prev > 1) nav.append(h("span", {class:"na"}, "…"));
+    nav.append(h("button", {class:"pg" + (i === thumbPage ? " on" : ""), type:"button", onclick:() => { thumbPage = i; renderThumbs(); $("#thumbs").scrollIntoView({block:"start"}); }}, String(i + 1)));
+    prev = i;
+  });
+}
+
+// Related Galleries: other folders that share this folder's series title.
+function renderRelated() {
+  const box = $("#related"), head = $("#relH");
+  relUrls.forEach(u => URL.revokeObjectURL(u)); relUrls = [];
+  box.replaceChildren(); head.hidden = true;
+  const key = dm.series.trim().toLowerCase();
+  if (!key) return;
+  const rel = library.filter(x => x.id !== dm.id && x.series.trim().toLowerCase() === key)
+    .sort((a, b) => collator.compare(a.seriesNumber, b.seriesNumber) || (b.date || 0) - (a.date || 0));
+  if (!rel.length) return;
+  head.hidden = false;
+  const rrow = (label, ...c) => h("div", {class:"row"}, h("b", {}, label), h("span", {}, ...c));
+  for (const x of rel) {
+    const url = URL.createObjectURL(x.cover); relUrls.push(url);
+    const open = () => openDetail(x);
+    box.append(h("div", {class:"rcard", tabindex:"0", role:"link", onclick:open, onkeydown:e => { if (e.key === "Enter") open(); }},
+      h("img", {src:url, alt:"", loading:"lazy"}),
+      h("div", {class:"rbody"},
+        h("h3", {}, x.title),
+        h("div", {class:"dartist"}, x.artist || "N/A"),
+        rrow("Series", seriesLabel(x)),
+        rrow("Type", x.type || "N/A"),
+        rrow("Language", x.language || "N/A"),
+        rrow("Tags", x.tags.length ? x.tags.map(t => h("span", {class:"chip static"}, t)) : h("span", {class:"na"}, "N/A")),
+        h("div", {class:"rdate"}, fmtDate(x.date)))));
+  }
+}
+
+/* ── Reader (pages are shown with <img>, so GIFs animate) ── */
+let cur = null, pageUrl = null, navToken = 0;
+let zoom = 1, fitWidth = 0, fitHeight = 0;
+const stage = $("#stage"), img = $("#page"), video = $("#video");
+let page = img; // the currently visible page element (image or video)
+const natW = () => page === video ? video.videoWidth : page.naturalWidth;
+const natH = () => page === video ? video.videoHeight : page.naturalHeight;
+
+function getZoomStep() { return Number($("#zoomStep").value) || 0.25; }
+
+function fitPageDimensions() {
+  if (!natW() || !natH()) return;
+  const scale = Math.min(stage.clientWidth / natW(), stage.clientHeight / natH());
+  fitWidth = Math.max(1, natW() * scale);
+  fitHeight = Math.max(1, natH() * scale);
+}
+
+// Zoom keeping the point under (clientX, clientY) fixed on screen. Defaults to the stage centre.
+function applyZoom(value, clientX, clientY) {
+  const stageRect = stage.getBoundingClientRect();
+  if (clientX === undefined) { clientX = stageRect.left + stage.clientWidth / 2; clientY = stageRect.top + stage.clientHeight / 2; }
+  const old = page.getBoundingClientRect();
+  if (!old.width || !old.height) return;
+  // Which fraction of the page is under the pointer right now?
+  const fx = Math.max(0, Math.min(1, (clientX - old.left) / old.width));
+  const fy = Math.max(0, Math.min(1, (clientY - old.top) / old.height));
+
+  zoom = Math.max(1, Math.min(6, value));
+  page.style.width = (fitWidth * zoom) + "px";
+  page.style.height = (fitHeight * zoom) + "px";
+  $("#zoomLevel").textContent = Math.round(zoom * 100) + "%";
+
+  // Reading the rect forces layout, so we can correct the scroll immediately.
+  const now = page.getBoundingClientRect();
+  stage.scrollLeft += now.left + fx * now.width - clientX;
+  stage.scrollTop += now.top + fy * now.height - clientY;
+}
+
+function resetZoom() {
+  fitPageDimensions();
+  zoom = 1;
+  page.style.width = fitWidth + "px";
+  page.style.height = fitHeight + "px";
+  $("#zoomLevel").textContent = "100%";
+  stage.scrollTo({left:0, top:0, behavior:"instant"});
+}
+
+function zoomAt(factor, clientX, clientY) {
+  applyZoom(zoom * factor, clientX, clientY);
+}
+
+$("#zoomIn").addEventListener("click", e => {
+  e.stopPropagation();
+  zoomAt(1 + getZoomStep());
+});
+$("#zoomOut").addEventListener("click", e => {
+  e.stopPropagation();
+  zoomAt(1 / (1 + getZoomStep()));
+});
+$("#zoomReset").addEventListener("click", e => { e.stopPropagation(); resetZoom(); });
+
+// Double-click a precise part of the page to magnify around that point.
+// Double-click again to return to fit-to-screen.
+img.addEventListener("dblclick", e => {
+  e.preventDefault();
+  e.stopPropagation();
+  if (zoom > 1) resetZoom();
+  else zoomAt(1 + getZoomStep(), e.clientX, e.clientY);
+});
+
+// Ctrl + wheel zooms around the pointer. A plain wheel scrolls the page as normal.
+// (Trackpad pinch gestures also arrive as ctrl + wheel.)
+stage.addEventListener("wheel", e => {
+  if (!e.ctrlKey) return;
+  e.preventDefault(); // stop the browser's own page zoom
+  if (!page.hasAttribute("src")) return;
+  let dy = e.deltaY;
+  if (e.deltaMode === 1) dy *= 33; else if (e.deltaMode === 2) dy *= 100;
+  dy = Math.max(-100, Math.min(100, dy));
+  // One mouse-wheel notch = one zoom step; small trackpad deltas zoom smoothly.
+  zoomAt(Math.pow(1 + getZoomStep(), -dy / 100), e.clientX, e.clientY);
+}, {passive:false});
+
+// Pinch zoom tracks the midpoint between the two fingers.
+let pinchStart = 0, pinchZoom = 1;
+stage.addEventListener("touchstart", e => {
+  if (e.touches.length === 2) {
+    pinchStart = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
+    pinchZoom = zoom;
+  }
+}, {passive:true});
+stage.addEventListener("touchmove", e => {
+  if (e.touches.length === 2 && pinchStart) {
+    e.preventDefault();
+    const distance = Math.hypot(e.touches[0].clientX-e.touches[1].clientX, e.touches[0].clientY-e.touches[1].clientY);
+    const x = (e.touches[0].clientX + e.touches[1].clientX) / 2;
+    const y = (e.touches[0].clientY + e.touches[1].clientY) / 2;
+    applyZoom(pinchZoom * distance / pinchStart, x, y);
+  }
+}, {passive:false});
+stage.addEventListener("touchend", e => { if (e.touches.length < 2) pinchStart = 0; }, {passive:true});
+
+const rtl = $("#rtl");
+try { rtl.checked = localStorage.getItem("manga-rtl") !== "0"; } catch (_) { rtl.checked = true; }
+rtl.addEventListener("change", () => { try { localStorage.setItem("manga-rtl", rtl.checked ? "1" : "0"); } catch (_) {} });
+
+async function openManga(m, start) {
+  resetZoom();
+  cur = m; $("#reader").hidden = false; $("#reader").classList.remove("bare");
+  $("#rtitle").textContent = m.title; document.body.style.overflow = "hidden";
+  await go(Math.min(start ?? (m.lastPage || 0), m.pageCount - 1));
+}
+async function go(i) {
+  if (!cur) return;
+  if (i < 0) return;
+  if (i >= cur.pageCount) { toast("End of ‘" + cur.title + "’"); return; }
+  const token = ++navToken;
+  const db = await dbp;
+  const rec = await wrap(db.transaction("pages").objectStore("pages").get([cur.id, i]));
+  if (token !== navToken || !rec) return;
+  const url = URL.createObjectURL(rec.blob);
+  if (rec.blob.type.startsWith("video/")) {
+    img.onload = null; img.hidden = true; img.removeAttribute("src");
+    video.hidden = false; page = video;
+    video.onloadedmetadata = resetZoom; video.src = url;
+    video.play().catch(() => {});
+  } else {
+    video.onloadedmetadata = null; video.pause(); video.hidden = true; video.removeAttribute("src"); video.load();
+    img.hidden = false; page = img;
+    img.onload = resetZoom; img.src = url; img.alt = "Page " + (i + 1);
+  }
+  resetZoom();
+  if (pageUrl) URL.revokeObjectURL(pageUrl);
+  pageUrl = url;
+  cur.lastPage = i;
+  $("#rpos").textContent = (i + 1) + " / " + cur.pageCount;
+  const d = await dbp; d.transaction("manga", "readwrite").objectStore("manga").put(cur);
+}
+function closeReader() {
+  $("#reader").hidden = true; document.body.style.overflow = "";
+  img.removeAttribute("src"); video.pause(); video.removeAttribute("src"); video.load();
+  if (pageUrl) { URL.revokeObjectURL(pageUrl); pageUrl = null; }
+  cur = null; resetZoom(); updateProgress();
+}
+window.addEventListener("resize", () => {
+  if (!$("#reader").hidden && natW()) resetZoom();
+});
+const next = () => cur && go(cur.lastPage + 1), prev = () => cur && go(cur.lastPage - 1);
+$("#back").addEventListener("click", closeReader);
+$("#stage").addEventListener("click", e => {
+  if (e.target === img || e.target === video) return;
+  const r = e.currentTarget.getBoundingClientRect(), x = (e.clientX - r.left) / r.width;
+  if (x < 0.33) (rtl.checked ? next : prev)();
+  else if (x > 0.67) (rtl.checked ? prev : next)();
+  else $("#reader").classList.toggle("bare");
+});
+document.addEventListener("keydown", e => {
+  if ($("#reader").hidden) {
+    // On the detail page, Escape goes back to the library.
+    if (e.key === "Escape" && !$("#detail").hidden && !/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) showLibrary();
+    return;
+  }
+  if (e.key === "Escape") closeReader();
+  else if (e.key === "ArrowLeft") (rtl.checked ? next : prev)();
+  else if (e.key === "ArrowRight") (rtl.checked ? prev : next)();
+  else if (e.key === " " || e.key === "PageDown") { e.preventDefault(); next(); }
+  else if (e.key === "PageUp") prev();
+  else if (e.key === "Home") go(0);
+  else if (e.key === "End") go(cur.pageCount - 1);
+});
+
+render().catch(err => { console.error(err); $("#count").textContent = "Storage is unavailable in this browser."; });
+</script>
+</body>
+</html>
