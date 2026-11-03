@@ -85,6 +85,44 @@ button.chip:hover{border-color:var(--accent);color:var(--accent)}
 .rcard img{width:100%;aspect-ratio:2/3;object-fit:cover;border-radius:4px;background:var(--line);display:block}
 .rbody h3{font:800 18px/1.25 var(--serif);margin:0;overflow-wrap:anywhere}
 .rdate{margin-top:8px;font-weight:600;color:var(--muted)}
+.gtools{display:flex;gap:10px;align-items:center;flex-wrap:wrap;margin-top:26px}
+.gtools .btn.small{margin-top:0}
+.gtools+.gbox{margin-top:10px}
+.gtools .hint{color:var(--muted);font-size:13px}
+.btn.ghost.on{border-color:var(--accent);color:var(--accent)}
+.gbox.pick .thumb{outline:2px dashed var(--accent);outline-offset:-2px}
+.presets{display:inline-flex;flex-wrap:wrap;align-items:center;margin-left:4px;padding-left:10px;border-left:1px solid var(--line)}
+.preset{border:0;border-radius:999px;padding:2px 12px;font-size:13px;font-weight:600;cursor:pointer;margin:2px 6px 2px 0}
+.preset:hover{filter:brightness(1.1)}
+.preset.done{background:#218a45!important;color:#fff!important;opacity:1;box-shadow:0 0 0 2px rgba(33,138,69,.28)}
+.preset.add{background:transparent;color:var(--muted);border:1px dashed var(--line);padding:1px 9px}
+.dnav{display:flex;gap:10px;flex-wrap:wrap}
+.dlg{border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--text);padding:22px;width:min(680px,calc(100% - 24px));max-height:88vh}
+.dlg::backdrop{background:rgba(0,0,0,.5)}
+.dlg h2{font:800 20px var(--serif);margin:0}
+.dlg h3{font:800 16px var(--serif);margin:18px 0 6px}
+.dlg p,.dlg .hint{color:var(--muted);font-size:13px;margin:0 0 10px}
+.dhead{display:flex;justify-content:space-between;align-items:center;gap:10px}
+.dlg .btn.small{margin-top:0}
+.kgroup{margin:16px 0 4px;font-size:13px;text-transform:uppercase;letter-spacing:.06em;color:var(--muted)}
+.krow{display:grid;grid-template-columns:minmax(120px,1fr) auto;gap:8px;align-items:center;padding:5px 0;border-bottom:1px solid var(--line)}
+.kkeys{display:flex;flex-wrap:wrap;gap:6px;justify-content:flex-end;align-items:center}
+.kchip{display:inline-flex;align-items:center;gap:4px;padding:1px 4px 1px 9px;border:1px solid var(--line);border-radius:7px;font-size:13px;font-variant-numeric:tabular-nums;background:var(--bg)}
+.kx,.kadd,.kreset{border:0;background:transparent;cursor:pointer;color:var(--muted);font-size:13px;padding:0 5px;border-radius:6px}
+.kx:hover,.kreset:hover{color:var(--danger)}
+.kadd{border:1px dashed var(--line);padding:1px 9px}
+.kadd:hover{border-color:var(--accent);color:var(--accent)}
+.kadd.rec{border-color:var(--accent);color:var(--accent-text);background:var(--accent)}
+.prow{display:grid;grid-template-columns:28px auto 1fr auto;gap:8px;align-items:center;padding:6px 0;border-bottom:1px solid var(--line)}
+.pnum{color:var(--muted);font-size:13px}
+.pdesc{color:var(--muted);font-size:13px;overflow-wrap:anywhere}
+.pact{display:flex;gap:4px}
+.pact button{border:1px solid var(--line);background:transparent;border-radius:7px;cursor:pointer;padding:1px 8px;font-size:12px;color:var(--text)}
+.pact button:hover{border-color:var(--accent)}
+.pform{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.pform .inp{width:100%}
+.pform input[type=color]{padding:2px;min-height:38px}
+@media(max-width:560px){.pform{grid-template-columns:1fr}.krow{grid-template-columns:1fr}.kkeys{justify-content:flex-start}}
 #exportDlg{border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--text);padding:22px;max-width:420px;width:calc(100% - 32px)}
 #exportDlg::backdrop{background:rgba(0,0,0,.5)}
 #exportDlg h2{font:800 20px var(--serif);margin:0 0 6px}
@@ -149,6 +187,7 @@ main{max-width:1280px;margin:0 auto;padding:16px clamp(16px,4vw,48px) 56px}
     <p class="sub" id="count">Loading…</p>
   </div>
   <div class="actions">
+    <button class="btn ghost" id="settingsBtn" type="button">Settings</button>
     <button class="btn ghost" id="exportBtn" type="button">Export library</button>
     <label class="btn ghost" id="backupBtn" tabindex="0">Import backup<input id="backupPicker" type="file" accept=".json,application/json" hidden></label>
     <label class="btn" id="importBtn" tabindex="0">Import manga folders<input id="picker" type="file" webkitdirectory directory multiple hidden></label>
@@ -177,7 +216,7 @@ main{max-width:1280px;margin:0 auto;padding:16px clamp(16px,4vw,48px) 56px}
 
 <section id="detail" hidden aria-label="Folder details">
   <div class="dwrap">
-    <button class="btn ghost" id="dBack" type="button">← Library</button>
+    <div class="dnav"><button class="btn ghost" id="dBack" type="button">← Library</button><button class="btn ghost" id="dSettings" type="button">Settings</button></div>
     <div class="dgrid">
       <div class="dleft">
         <button class="dcover" id="dCover" type="button" title="Continue reading"><img id="dCoverImg" alt=""></button>
@@ -185,7 +224,12 @@ main{max-width:1280px;margin:0 auto;padding:16px clamp(16px,4vw,48px) 56px}
       </div>
       <div class="dright" id="dInfo"></div>
     </div>
-    <div class="gbox"><div class="thumbs" id="thumbs"></div></div>
+    <div class="gtools">
+      <button class="btn ghost small" id="gReverse" type="button" aria-pressed="false">Reverse order</button>
+      <button class="btn ghost small" id="gCover" type="button" aria-pressed="false">Choose cover</button>
+      <span class="hint" id="gHint"></span>
+    </div>
+    <div class="gbox" id="gbox"><div class="thumbs" id="thumbs"></div></div>
     <nav class="pager" id="pager" aria-label="Page gallery pages"></nav>
     <h2 class="related-h" id="relH" hidden>Related Galleries</h2>
     <div id="related"></div>
@@ -212,10 +256,37 @@ main{max-width:1280px;margin:0 auto;padding:16px clamp(16px,4vw,48px) 56px}
         </select>
       </label>
     </div>
+    <button id="rCover" title="Use this page as the folder cover">Set cover</button>
     <label><input type="checkbox" id="rtl"> Right to left</label>
   </div>
   <div id="stage"><img id="page" class="media" alt=""><video id="video" class="media" controls loop muted playsinline hidden></video><span id="msg"></span></div>
 </section>
+<dialog id="settingsDlg" class="dlg">
+  <div class="dhead"><h2>Settings</h2><button class="btn ghost small" id="setClose" type="button">Close</button></div>
+  <h3>Presaved tags</h3>
+  <p>One-click buttons that add a tag, language, character and so on to a folder. They appear on the folder page next to Tags.</p>
+  <button class="btn ghost small" id="setPresets" type="button">Manage presaved tags…</button>
+  <h3>Keybinds</h3>
+  <p>Click “+ Add key”, then press the key (or combination) you want. A key can only do one thing on a screen; assigning it moves it from the other action. Presaved tags can be given keys here too.</p>
+  <div id="keyList"></div>
+  <div class="fbtns"><button class="btn ghost small" id="keyResetAll" type="button">Reset all keybinds</button></div>
+</dialog>
+<dialog id="presetDlg" class="dlg">
+  <div class="dhead"><h2>Presaved tags</h2><button class="btn ghost small" id="presetClose" type="button">Done</button></div>
+  <p>The order here is the “#” number shown in Settings. Pressing one adds it to the open folder; Language, Type, Artist, Group and Series are replaced, Tags and Characters are added to.</p>
+  <div id="presetList"></div>
+  <h3 id="pFormTitle">New presaved tag</h3>
+  <div class="pform">
+    <input class="inp" id="pLabel" type="text" placeholder="Button text (optional)" aria-label="Button text">
+    <select class="inp" id="pField" aria-label="Applies to">
+      <option value="tags">Tag</option><option value="language">Language</option><option value="characters">Character</option>
+      <option value="type">Type</option><option value="artist">Artist</option><option value="group">Group</option><option value="series">Series</option>
+    </select>
+    <input class="inp" id="pValue" type="text" placeholder="Value, e.g. English" aria-label="Value">
+    <input class="inp" id="pColor" type="color" value="#d32f2f" aria-label="Color">
+  </div>
+  <div class="fbtns"><button class="btn small" id="pSave" type="button">Add</button><button class="btn ghost small" id="pCancel" type="button" hidden>Cancel edit</button></div>
+</dialog>
 <div class="toast" id="toast" hidden></div>
 
 <script>
@@ -345,7 +416,7 @@ async function importGroups(groups, skipped = 0, existing = null) {
     // Date tag = newest modified time among the folder's files.
     const modified = files.reduce((mx, f) => Math.max(mx, f.lastModified || 0), 0) || Date.now();
     const rec = ensureMeta({
-      ...(prev || {}), id, title: prev ? prev.title : title, source, cover:coverBlob, pageCount:files.length,
+      ...(prev || {}), id, title: prev ? prev.title : title, source, cover:(prev && prev.customCover) ? prev.cover : coverBlob, pageCount:files.length,
       lastPage: prev ? Math.min(prev.lastPage || 0, files.length - 1) : 0,
       added: prev ? prev.added : Date.now(), date: modified
     });
@@ -436,7 +507,7 @@ $("#importBtn").addEventListener("keydown", e => { if (e.key === "Enter" || e.ke
    One record per line, but the whole file is still valid JSON:
    {"format":...,"manga":[ <one manga per line> ],"pages":[ <one page per line, base64> ]}
    so huge libraries can be written and read as a stream. */
-const META_KEYS = ["source","artist","group","type","language","series","seriesNumber","characters","tags","date"];
+const META_KEYS = ["source","artist","group","type","language","series","seriesNumber","characters","tags","date","customCover","reversed"];
 const pickMeta = m => { const o = {}; for (const k of META_KEYS) if (m[k] !== undefined) o[k] = m[k]; return o; };
 const blobToB64 = blob => new Promise((res, rej) => {
   const r = new FileReader();
@@ -475,7 +546,7 @@ async function exportLibrary(withImages) {
     const list = await wrap(db.transaction("manga").objectStore("manga").getAll());
     list.sort((a, b) => a.added - b.added);
     await write('{"format":"manga-library","version":1,"exported":' + JSON.stringify(new Date().toISOString()) +
-                ',"includesImages":' + withImages + ',"manga":[\n');
+                ',"includesImages":' + withImages + ',"settings":' + JSON.stringify({presets, keybinds:userBinds}) + ',"manga":[\n');
     for (let i = 0; i < list.length; i++) {
       const m = list[i];
       const rec = {id:m.id, title:m.title, pageCount:m.pageCount, lastPage:m.lastPage || 0, added:m.added, ...pickMeta(m)};
@@ -534,7 +605,11 @@ async function importBackup(file) {
     if (!line) continue;
     if (section === "header") {
       if (!line.startsWith('{"format"') || !line.includes('"manga-library"')) throw new Error("Not a Manga Library backup file.");
-      includesImages = /"includesImages":true/.test(line); sawHeader = true; section = "manga"; continue;
+      let hdr = null;
+      try { hdr = JSON.parse(line.replace(/,"manga":\[$/, "}")); } catch (_) {}
+      includesImages = hdr ? hdr.includesImages === true : /"includesImages":true/.test(line);
+      if (hdr && hdr.settings) importSettings(hdr.settings);
+      sawHeader = true; section = "manga"; continue;
     }
     if (line.startsWith("],") && line.includes('"pages":[')) {
       // Decide what to import now; unchanged folders are skipped (same name + page count).
@@ -588,7 +663,8 @@ async function importBackup(file) {
       const prev = existing.get(m.id);
       if (!prev) { missing++; continue; }
       prev.lastPage = Math.max(0, Math.min(m.lastPage || 0, prev.pageCount - 1));
-      Object.assign(prev, pickMeta(m));
+      const meta = pickMeta(m); delete meta.customCover;   // lite backups carry no cover images
+      Object.assign(prev, meta);
       t.objectStore("manga").put(prev); progress++;
     }
     await done(t);
@@ -724,14 +800,16 @@ searchEl.addEventListener("input", () => { clearTimeout(searchTimer); searchTime
 sortEl.addEventListener("change", () => { try { localStorage.setItem("manga-sort", sortEl.value); } catch (_) {} renderShelf(); });
 
 /* ── Detail page: info, tags, page gallery, related folders ── */
-let dm = null, thumbPage = 0, thumbToken = 0, detailCoverUrl = null, relUrls = [];
+let dm = null, thumbPage = 0, thumbToken = 0, detailCoverUrl = null, relUrls = [], coverMode = false;
+// Pages are stored in import order; "reversed" flips the order they are shown and read in.
+const actualIndex = (m, d) => m.reversed ? m.pageCount - 1 - d : d;
 const thumbUrls = new Map();
 const THUMBS_PER_PAGE = 36;
 
 function openDetail(m) {
   if (!$("#libraryView").hidden) libScroll = window.scrollY;
   cleanupDetail();
-  dm = ensureMeta(m); thumbPage = 0;
+  dm = ensureMeta(m); thumbPage = 0; coverMode = false; updateGalleryTools();
   $("#libraryView").hidden = true; $("#detail").hidden = false;
   window.scrollTo(0, 0);
   detailCoverUrl = URL.createObjectURL(m.cover);
@@ -768,21 +846,24 @@ function renderInfo() {
   const row = (label, ...content) => h("div", {class:"row"}, h("b", {}, label), h("span", {}, ...content));
   $("#dInfo").replaceChildren(
     h("h1", {class:"dtitle"}, m.title),
-    h("div", {class:"dartist"}, m.artist ? chip(m.artist) : "N/A"),
-    row("Group", m.group ? chip(m.group) : na()),
-    row("Type", m.type ? chip(m.type) : na()),
-    row("Language", m.language ? chip(m.language) : na()),
-    row("Series", m.series ? [chip(m.series), m.seriesNumber ? h("span", {class:"num"}, numLabel(m.seriesNumber)) : null] : na()),
-    row("Characters", chips(m.characters)),
-    row("Tags", chips(m.tags)),
+    h("div", {class:"dartist"}, m.artist ? chip(m.artist) : "N/A", presetBar("artist")),
+    row("Group", m.group ? chip(m.group) : na(), presetBar("group")),
+    row("Type", m.type ? chip(m.type) : na(), presetBar("type")),
+    row("Language", m.language ? chip(m.language) : na(), presetBar("language")),
+    row("Series", m.series ? [chip(m.series), m.seriesNumber ? h("span", {class:"num"}, numLabel(m.seriesNumber)) : null] : na(), presetBar("series")),
+    row("Characters", chips(m.characters), presetBar("characters")),
+    row("Tags", chips(m.tags), presetBar("tags")),
     row("Read from", m.source ? chip(m.source) : na()),
     h("div", {class:"ddate"}, fmtDate(m.date)),
-    h("button", {class:"btn ghost small", type:"button", onclick:renderForm}, "Edit details")
+    h("button", {class:"btn ghost small", id:"dEdit", type:"button", onclick:renderForm}, "Edit details")
   );
+  editing = false;
 }
 
+let editing = false;
 function renderForm() {
   const m = dm;
+  editing = true;
   const text = (val, attrs = {}) => h("input", {type:"text", class:"inp", value:val || "", ...attrs});
   const fld = (label, input, hint) => h("label", {class:"frow"}, h("span", {}, label), h("span", {}, input, hint ? h("span", {class:"hint"}, hint) : null));
   const dl = (id, opts) => h("datalist", {id}, opts.map(o => h("option", {value:o})));
@@ -822,8 +903,8 @@ function renderForm() {
     dl("langList", ["日本語","English","中文","한국어","Español","Français"]),
     dl("seriesList", seriesNames),
     h("div", {class:"fbtns"},
-      h("button", {class:"btn", type:"button", onclick:save}, "Save"),
-      h("button", {class:"btn ghost", type:"button", onclick:renderInfo}, "Cancel"))
+      h("button", {class:"btn", id:"dSave", type:"button", onclick:save}, "Save"),
+      h("button", {class:"btn ghost", id:"dCancel", type:"button", onclick:renderInfo}, "Cancel"))
   );
 }
 
@@ -860,8 +941,8 @@ async function renderThumbs() {
   grid.replaceChildren();
   for (let i = start; i < end; i++) {
     const im = h("img", {alt:"Page " + (i + 1), decoding:"async"});
-    grid.append(h("button", {class:"thumb", type:"button", title:"Open page " + (i + 1), onclick:() => openManga(m, i)}, im, h("span", {class:"tn"}, String(i + 1))));
-    cells.push([i, im]);
+    grid.append(h("button", {class:"thumb", type:"button", title:"Page " + (i + 1), onclick:() => coverMode ? chooseCover(i) : openManga(m, i)}, im, h("span", {class:"tn"}, String(i + 1))));
+    cells.push([actualIndex(m, i), im]);
   }
   renderPager(pages);
   let next = 0;
@@ -886,6 +967,62 @@ function renderPager(pages) {
     nav.append(h("button", {class:"pg" + (i === thumbPage ? " on" : ""), type:"button", onclick:() => { thumbPage = i; renderThumbs(); $("#thumbs").scrollIntoView({block:"start"}); }}, String(i + 1)));
     prev = i;
   });
+}
+
+async function saveManga(m) {
+  const db = await dbp, t = db.transaction("manga", "readwrite");
+  t.objectStore("manga").put(m);
+  await done(t);
+}
+function refreshDetailCover() {
+  if (!dm) return;
+  if (detailCoverUrl) URL.revokeObjectURL(detailCoverUrl);
+  detailCoverUrl = URL.createObjectURL(dm.cover);
+  $("#dCoverImg").src = detailCoverUrl;
+}
+// Use one stored page as the folder's cover.
+async function setCoverFromPage(m, idx, custom) {
+  const db = await dbp;
+  const rec = await wrap(db.transaction("pages").objectStore("pages").get([m.id, idx]));
+  if (!rec) return false;
+  m.cover = rec.blob.type.startsWith("video/") ? ((await videoFrame(rec.blob)) || await placeholderCover()) : rec.blob;
+  m.customCover = custom;
+  await saveManga(m);
+  return true;
+}
+async function chooseCover(i) {
+  const m = dm; if (!m) return;
+  coverMode = false; updateGalleryTools();
+  try {
+    if (await setCoverFromPage(m, actualIndex(m, i), true)) { refreshDetailCover(); toast("Cover set to page " + (i + 1)); }
+  } catch (err) { console.error(err); toast("Could not change the cover."); }
+}
+async function toggleReverse() {
+  const m = dm; if (!m) return;
+  m.reversed = !m.reversed;
+  if (m.lastPage > 0) m.lastPage = m.pageCount - 1 - m.lastPage;   // stay on the same page
+  try {
+    // A cover that was picked automatically follows the new first page; a custom one stays.
+    if (!m.customCover) await setCoverFromPage(m, actualIndex(m, 0), false); else await saveManga(m);
+  } catch (err) { console.error(err); }
+  refreshDetailCover(); thumbPage = 0; updateGalleryTools(); updateProgress(); renderThumbs();
+  toast(m.reversed ? "Pages reversed" : "Original page order");
+}
+function updateGalleryTools() {
+  const rev = !!(dm && dm.reversed);
+  $("#gReverse").classList.toggle("on", rev); $("#gReverse").setAttribute("aria-pressed", String(rev));
+  $("#gReverse").textContent = rev ? "Order: reversed" : "Reverse order";
+  $("#gCover").classList.toggle("on", coverMode); $("#gCover").setAttribute("aria-pressed", String(coverMode));
+  $("#gbox").classList.toggle("pick", coverMode);
+  $("#gHint").textContent = coverMode ? "Click a page to use it as the cover." : "";
+}
+$("#gReverse").addEventListener("click", toggleReverse);
+$("#gCover").addEventListener("click", () => { coverMode = !coverMode; updateGalleryTools(); });
+function galleryGo(d) {
+  if (!dm) return false;
+  const pages = Math.ceil(dm.pageCount / THUMBS_PER_PAGE), np = thumbPage + d;
+  if (np < 0 || np >= pages) return false;
+  thumbPage = np; renderThumbs(); $("#thumbs").scrollIntoView({block:"nearest"});
 }
 
 // Related Galleries: other folders that share this folder's series title.
@@ -1034,7 +1171,7 @@ async function go(i) {
   if (i >= cur.pageCount) { toast("End of ‘" + cur.title + "’"); return; }
   const token = ++navToken;
   const db = await dbp;
-  const rec = await wrap(db.transaction("pages").objectStore("pages").get([cur.id, i]));
+  const rec = await wrap(db.transaction("pages").objectStore("pages").get([cur.id, actualIndex(cur, i)]));
   if (token !== navToken || !rec) return;
   const url = URL.createObjectURL(rec.blob);
   if (rec.blob.type.startsWith("video/")) {
@@ -1065,6 +1202,14 @@ window.addEventListener("resize", () => {
 });
 const next = () => cur && go(cur.lastPage + 1), prev = () => cur && go(cur.lastPage - 1);
 $("#back").addEventListener("click", closeReader);
+$("#rCover").addEventListener("click", async e => {
+  e.stopPropagation();
+  if (!cur) return;
+  const m = cur;
+  try {
+    if (await setCoverFromPage(m, actualIndex(m, m.lastPage), true)) { if (dm === m) refreshDetailCover(); toast("Cover set to page " + (m.lastPage + 1)); }
+  } catch (err) { console.error(err); toast("Could not change the cover."); }
+});
 $("#stage").addEventListener("click", e => {
   if (e.target === img || e.target === video) return;
   const r = e.currentTarget.getBoundingClientRect(), x = (e.clientX - r.left) / r.width;
@@ -1072,20 +1217,263 @@ $("#stage").addEventListener("click", e => {
   else if (x > 0.67) (rtl.checked ? prev : next)();
   else $("#reader").classList.toggle("bare");
 });
+/* ── Presaved tags ── */
+const PFIELDS = {tags:"Tag", language:"Language", characters:"Character", type:"Type", artist:"Artist", group:"Group", series:"Series"};
+const uid = () => Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+const okColor = c => /^#[0-9a-f]{6}$/i.test(c || "") ? c : "#d32f2f";
+const fgFor = c => { const r = parseInt(c.slice(1, 3), 16), g = parseInt(c.slice(3, 5), 16), b = parseInt(c.slice(5, 7), 16); return (0.299 * r + 0.587 * g + 0.114 * b) > 150 ? "#111" : "#fff"; };
+const validPreset = p => p && typeof p.id === "string" && typeof p.value === "string" && p.value.trim() && PFIELDS[p.field];
+function loadPresets() {
+  try {
+    const raw = localStorage.getItem("manga-presets");
+    if (raw === null) return [{id:uid(), label:"English", field:"language", value:"English", color:"#d32f2f"}];   // first run example
+    const a = JSON.parse(raw);
+    return Array.isArray(a) ? a.filter(validPreset).map(p => ({id:p.id, label:String(p.label || ""), field:p.field, value:p.value.trim(), color:okColor(p.color)})) : [];
+  } catch (_) { return []; }
+}
+let presets = loadPresets();
+const savePresets = () => { try { localStorage.setItem("manga-presets", JSON.stringify(presets)); } catch (_) {} };
+
+function presetApplied(m, p) {
+  const v = p.value.trim().toLowerCase();
+  return (p.field === "tags" || p.field === "characters") ? m[p.field].some(x => x.toLowerCase() === v) : (m[p.field] || "").toLowerCase() === v;
+}
+function presetButton(p, onclick, applied) {
+  const c = okColor(p.color);
+  return h("button", {class:"preset" + (applied ? " done" : ""), type:"button", style:"background:" + c + ";color:" + fgFor(c),
+    title:(PFIELDS[p.field]) + ": " + p.value + (applied ? " (already applied)" : ""), onclick}, (applied ? "✓ " : "") + (p.label || p.value));
+}
+function presetBar(field) {
+  const matching = presets.filter(p => p.field === field);
+  return h("span", {class:"presets"},
+    matching.map(p => presetButton(p, () => applyPreset(p), presetApplied(dm, p))),
+    h("button", {class:"preset add", type:"button", title:"Create a presaved " + PFIELDS[field].toLowerCase(), onclick:() => openPresetDlg(field)}, matching.length ? "+" : "+ Presave"));
+}
+async function applyPreset(p) {
+  const m = dm; if (!m) return;
+  if (editing) { toast("Save or cancel your edits first."); return; }
+  const v = p.value.trim();
+  const wasApplied = presetApplied(m, p);
+  if (p.field === "tags" || p.field === "characters") {
+    m[p.field] = Array.isArray(m[p.field]) ? m[p.field] : [];
+    if (wasApplied) {
+      m[p.field] = m[p.field].filter(x => String(x).trim().toLowerCase() !== v.toLowerCase());
+    } else {
+      m[p.field].push(v);
+    }
+  } else {
+    m[p.field] = wasApplied ? "" : v;
+  }
+  try { await saveManga(m); } catch (err) { console.error(err); toast("Could not save."); return; }
+  if (!$("#detail").hidden) { renderInfo(); renderRelated(); }
+  toast((wasApplied ? "Removed “" : "Added “") + v + "” (" + PFIELDS[p.field].toLowerCase() + ")");
+}
+
+const presetDlg = $("#presetDlg");
+let editingPreset = null;
+function renderPresetDlg() {
+  const list = $("#presetList"); list.replaceChildren();
+  if (!presets.length) list.append(h("p", {class:"hint"}, "No presaved tags yet. Create one below."));
+  const move = (i, d) => { const j = i + d; if (j < 0 || j >= presets.length) return; [presets[i], presets[j]] = [presets[j], presets[i]]; savePresets(); renderPresetDlg(); renderSettings(); };
+  presets.forEach((p, i) => list.append(h("div", {class:"prow"},
+    h("span", {class:"pnum"}, "#" + (i + 1)),
+    presetButton(p, () => {}, false),
+    h("span", {class:"pdesc"}, PFIELDS[p.field] + ": " + p.value),
+    h("span", {class:"pact"},
+      h("button", {type:"button", title:"Move up", onclick:() => move(i, -1)}, "↑"),
+      h("button", {type:"button", title:"Move down", onclick:() => move(i, 1)}, "↓"),
+      h("button", {type:"button", onclick:() => { editingPreset = p; renderPresetDlg(); }}, "Edit"),
+      h("button", {type:"button", onclick:() => {
+        presets = presets.filter(x => x !== p); delete userBinds["preset:" + p.id]; saveBinds(); savePresets();
+        if (editingPreset === p) editingPreset = null;
+        renderPresetDlg(); renderSettings();
+      }}, "Delete")))));
+  const e = editingPreset;
+  $("#pLabel").value = e ? e.label : ""; $("#pField").value = e ? e.field : newPresetField;
+  $("#pValue").value = e ? e.value : ""; $("#pColor").value = e ? okColor(e.color) : "#d32f2f";
+  $("#pSave").textContent = e ? "Save changes" : "Add"; $("#pCancel").hidden = !e;
+  $("#pFormTitle").textContent = e ? "Edit presaved tag" : "New presaved tag";
+}
+let newPresetField = "tags";
+function openPresetDlg(field = "tags") { editingPreset = null; newPresetField = field; renderPresetDlg(); if (!presetDlg.open) presetDlg.showModal(); }
+$("#pSave").addEventListener("click", () => {
+  const value = $("#pValue").value.trim();
+  if (!value) { toast("Enter the tag text."); return; }
+  const rec = {id:editingPreset ? editingPreset.id : uid(), label:$("#pLabel").value.trim(), field:$("#pField").value, value, color:okColor($("#pColor").value)};
+  if (editingPreset) presets = presets.map(x => x === editingPreset ? rec : x); else presets.push(rec);
+  editingPreset = null; savePresets(); renderPresetDlg(); renderSettings();
+});
+$("#pCancel").addEventListener("click", () => { editingPreset = null; renderPresetDlg(); });
+$("#presetClose").addEventListener("click", () => presetDlg.close());
+presetDlg.addEventListener("close", () => { if (dm && !$("#detail").hidden && !editing) renderInfo(); });
+
+/* ── Keybinds ──
+   Every action below is "clicked" by its key. Keys are stored as e.g. "Space", "e", "Ctrl+e", "ArrowLeft". */
+const SCREENS = {global:["library","detail","reader"], library:["library"], detail:["detail"], folder:["detail","reader"], reader:["reader"]};
+const CTX_LABEL = {global:"Everywhere", library:"Library", detail:"Folder page", folder:"Folder page & viewer", reader:"Viewer"};
+const overlap = (a, b) => SCREENS[a].some(x => SCREENS[b].includes(x));
+const clickEl = sel => () => { const el = $(sel); if (!el) return false; el.click(); };
+const tabStep = d => () => {
+  const tabs = [...document.querySelectorAll("#sources .tab")];
+  if (tabs.length < 2) return false;
+  const i = Math.max(0, tabs.findIndex(t => t.classList.contains("on")));
+  tabs[(i + d + tabs.length) % tabs.length].click();
+};
+const STATIC_ACTIONS = [
+  {id:"settings", ctx:"global", label:"Open settings", keys:["?"], run:() => openSettings()},
+
+  {id:"lib.search", ctx:"library", label:"Focus the search box", keys:["/"], run:() => $("#search").focus()},
+  {id:"lib.import", ctx:"library", label:"Import manga folders", keys:[], run:clickEl("#picker")},
+  {id:"lib.backup", ctx:"library", label:"Import backup", keys:[], run:clickEl("#backupPicker")},
+  {id:"lib.export", ctx:"library", label:"Export library", keys:[], run:clickEl("#exportBtn")},
+  {id:"lib.sort", ctx:"library", label:"Cycle sort order", keys:[], run:() => {
+    sortEl.selectedIndex = (sortEl.selectedIndex + 1) % sortEl.options.length;
+    sortEl.dispatchEvent(new Event("change")); toast("Sort: " + sortEl.selectedOptions[0].textContent);
+  }},
+  {id:"lib.tabNext", ctx:"library", label:"Next “Read from” tab", keys:[], run:tabStep(1)},
+  {id:"lib.tabPrev", ctx:"library", label:"Previous “Read from” tab", keys:[], run:tabStep(-1)},
+
+  {id:"detail.back", ctx:"detail", label:"Back to library", keys:["Escape"], run:clickEl("#dBack")},
+  {id:"detail.continue", ctx:"detail", label:"Continue reading (click the cover)", keys:[], run:clickEl("#dCover")},
+  {id:"detail.edit", ctx:"detail", label:"Edit details", keys:[], run:clickEl("#dEdit")},
+  {id:"detail.save", ctx:"detail", label:"Save details (while editing)", keys:[], run:clickEl("#dSave")},
+  {id:"detail.cancel", ctx:"detail", label:"Cancel editing", keys:[], run:clickEl("#dCancel")},
+  {id:"detail.reverse", ctx:"detail", label:"Reverse page order", keys:[], run:clickEl("#gReverse")},
+  {id:"detail.chooseCover", ctx:"detail", label:"Choose cover (then click a page)", keys:[], run:clickEl("#gCover")},
+  {id:"detail.galNext", ctx:"detail", label:"Next gallery page", keys:["ArrowRight"], run:() => galleryGo(1)},
+  {id:"detail.galPrev", ctx:"detail", label:"Previous gallery page", keys:["ArrowLeft"], run:() => galleryGo(-1)},
+  {id:"detail.presets", ctx:"detail", label:"Manage presaved tags", keys:[], run:() => openPresetDlg()},
+
+  {id:"reader.back", ctx:"reader", label:"Back out of the viewer", keys:["Escape"], run:clickEl("#back")},
+  {id:"reader.next", ctx:"reader", label:"Next page", keys:["Space","PageDown"], run:() => next()},
+  {id:"reader.prev", ctx:"reader", label:"Previous page", keys:["PageUp"], run:() => prev()},
+  {id:"reader.left", ctx:"reader", label:"Page left (follows Right to left)", keys:["ArrowLeft"], run:() => (rtl.checked ? next : prev)()},
+  {id:"reader.right", ctx:"reader", label:"Page right (follows Right to left)", keys:["ArrowRight"], run:() => (rtl.checked ? prev : next)()},
+  {id:"reader.first", ctx:"reader", label:"First page", keys:["Home"], run:() => go(0)},
+  {id:"reader.last", ctx:"reader", label:"Last page", keys:["End"], run:() => cur && go(cur.pageCount - 1)},
+  {id:"reader.zoomIn", ctx:"reader", label:"Zoom in", keys:["=","Plus"], run:clickEl("#zoomIn")},
+  {id:"reader.zoomOut", ctx:"reader", label:"Zoom out", keys:["-"], run:clickEl("#zoomOut")},
+  {id:"reader.fit", ctx:"reader", label:"Fit to screen", keys:["0"], run:clickEl("#zoomReset")},
+  {id:"reader.rtl", ctx:"reader", label:"Toggle Right to left", keys:[], run:() => rtl.click()},
+  {id:"reader.bar", ctx:"reader", label:"Show / hide the top bar", keys:[], run:() => $("#reader").classList.toggle("bare")},
+  {id:"reader.cover", ctx:"reader", label:"Use this page as the cover", keys:[], run:clickEl("#rCover")},
+  {id:"reader.play", ctx:"reader", label:"Play / pause video", keys:[], run:() => { if (page !== video || video.hidden) return false; if (video.paused) video.play(); else video.pause(); }}
+];
+const allActions = () => [...STATIC_ACTIONS, ...presets.map((p, i) => ({
+  id:"preset:" + p.id, ctx:"folder", label:"Add presaved tag #" + (i + 1) + " — " + (p.label || p.value), keys:[], run:() => applyPreset(p)
+}))];
+
+let userBinds = {};
+try { const b = JSON.parse(localStorage.getItem("manga-keybinds") || "{}"); if (b && typeof b === "object" && !Array.isArray(b)) userBinds = b; } catch (_) {}
+const saveBinds = () => { try { localStorage.setItem("manga-keybinds", JSON.stringify(userBinds)); } catch (_) {} };
+const bindingsOf = a => Array.isArray(userBinds[a.id]) ? userBinds[a.id] : a.keys;
+const setBinds = (id, list) => { userBinds[id] = list; saveBinds(); };
+
+function normKey(e) {
+  if (["Shift", "Control", "Alt", "Meta"].includes(e.key)) return null;
+  let k = e.key === " " ? "Space" : e.key === "+" ? "Plus" : (e.key.length === 1 ? e.key.toLowerCase() : e.key);
+  const mods = [];
+  if (e.ctrlKey) mods.push("Ctrl"); if (e.altKey) mods.push("Alt"); if (e.metaKey) mods.push("Meta");
+  if (e.shiftKey && !(e.key.length === 1 && !/[a-z]/i.test(e.key))) mods.push("Shift");
+  return [...mods, k].join("+");
+}
+const KEYNAMES = {ArrowLeft:"←", ArrowRight:"→", ArrowUp:"↑", ArrowDown:"↓", Plus:"+"};
+const prettyKey = k => k.split("+").map(p => KEYNAMES[p] || (p.length === 1 ? p.toUpperCase() : p)).join("+").replace(/\+$/, "+");
+const isTyping = t => t && (t.isContentEditable || t.tagName === "TEXTAREA" || t.tagName === "SELECT" ||
+  (t.tagName === "INPUT" && !["checkbox","radio","button","file","range","color"].includes(t.type)));
+
+// Take key k away from every other action that is active on the same screens.
+function steal(me, k) {
+  const moved = [];
+  for (const a of allActions()) {
+    if (a.id === me.id || !overlap(a.ctx, me.ctx)) continue;
+    const b = bindingsOf(a);
+    if (b.includes(k)) { setBinds(a.id, b.filter(x => x !== k)); moved.push(a.label); }
+  }
+  return moved;
+}
+function assignKey(id, k) {
+  const me = allActions().find(a => a.id === id); if (!me) return;
+  const moved = steal(me, k), mine = bindingsOf(me);
+  if (!mine.includes(k)) setBinds(id, [...mine, k]);
+  if (moved.length) toast(prettyKey(k) + " moved from: " + moved.join(", "));
+}
+
+let recording = null;
+const settingsDlg = $("#settingsDlg");
+function renderSettings() {
+  const box = $("#keyList"); box.replaceChildren();
+  const acts = allActions();
+  for (const ctx of Object.keys(CTX_LABEL)) {
+    const list = acts.filter(a => a.ctx === ctx);
+    if (!list.length) continue;
+    box.append(h("h4", {class:"kgroup"}, CTX_LABEL[ctx]));
+    for (const a of list) {
+      const keys = bindingsOf(a), rec = recording === a.id;
+      box.append(h("div", {class:"krow"},
+        h("span", {}, a.label),
+        h("span", {class:"kkeys"},
+          keys.map(k => h("span", {class:"kchip"}, prettyKey(k),
+            h("button", {class:"kx", type:"button", "aria-label":"Remove " + prettyKey(k), onclick:() => { setBinds(a.id, keys.filter(x => x !== k)); renderSettings(); }}, "×"))),
+          h("button", {class:"kadd" + (rec ? " rec" : ""), type:"button", onclick:() => { recording = rec ? null : a.id; renderSettings(); }}, rec ? "Press a key…" : "+ Add key"),
+          (a.id in userBinds) ? h("button", {class:"kreset", type:"button", title:"Back to the default key", onclick:() => {
+            delete userBinds[a.id]; a.keys.forEach(k => steal(a, k)); saveBinds(); renderSettings();
+          }}, "Reset") : null)));
+    }
+  }
+}
+function openSettings() { recording = null; renderSettings(); if (!settingsDlg.open) settingsDlg.showModal(); }
+settingsDlg.addEventListener("close", () => { recording = null; });
+$("#settingsBtn").addEventListener("click", openSettings);
+$("#dSettings").addEventListener("click", openSettings);
+$("#setClose").addEventListener("click", () => settingsDlg.close());
+$("#setPresets").addEventListener("click", () => { settingsDlg.close(); openPresetDlg(); });
+$("#keyResetAll").addEventListener("click", () => { userBinds = {}; saveBinds(); recording = null; renderSettings(); toast("Keybinds reset"); });
+
+// While "+ Add key" is waiting, the next key press is captured here (before anything else sees it).
 document.addEventListener("keydown", e => {
-  if ($("#reader").hidden) {
-    // On the detail page, Escape goes back to the library.
-    if (e.key === "Escape" && !$("#detail").hidden && !/^(INPUT|TEXTAREA|SELECT)$/.test(e.target.tagName)) showLibrary();
+  if (!recording) return;
+  const k = normKey(e);
+  if (!k || k === "Tab") return;
+  e.preventDefault(); e.stopImmediatePropagation();
+  const id = recording; recording = null;
+  assignKey(id, k); renderSettings();
+}, true);
+
+document.addEventListener("keydown", e => {
+  if (recording || e.defaultPrevented || e.isComposing) return;
+  if (document.querySelector("dialog[open]") || isTyping(e.target)) return;
+  const k = normKey(e); if (!k) return;
+  const screen = !$("#reader").hidden ? "reader" : !$("#detail").hidden ? "detail" : "library";
+  for (const a of allActions()) {
+    if (!SCREENS[a.ctx].includes(screen) || !bindingsOf(a).includes(k)) continue;
+    if (a.run() === false) continue;
+    e.preventDefault();
     return;
   }
-  if (e.key === "Escape") closeReader();
-  else if (e.key === "ArrowLeft") (rtl.checked ? next : prev)();
-  else if (e.key === "ArrowRight") (rtl.checked ? prev : next)();
-  else if (e.key === " " || e.key === "PageDown") { e.preventDefault(); next(); }
-  else if (e.key === "PageUp") prev();
-  else if (e.key === "Home") go(0);
-  else if (e.key === "End") go(cur.pageCount - 1);
 });
+
+// Settings stored in a backup file: presets are merged in, keybinds are applied.
+function importSettings(st) {
+  try {
+    const idMap = {};
+    if (Array.isArray(st.presets)) for (const p of st.presets) {
+      if (!validPreset(p)) continue;
+      const same = presets.find(x => x.field === p.field && x.value.toLowerCase() === p.value.trim().toLowerCase());
+      if (same) { idMap[p.id] = same.id; continue; }
+      const id = presets.some(x => x.id === p.id) ? uid() : p.id;
+      idMap[p.id] = id;
+      presets.push({id, label:String(p.label || ""), field:p.field, value:p.value.trim(), color:okColor(p.color)});
+    }
+    savePresets();
+    if (st.keybinds && typeof st.keybinds === "object") for (const [id, keys] of Object.entries(st.keybinds)) {
+      if (!Array.isArray(keys)) continue;
+      const nid = id.startsWith("preset:") ? "preset:" + (idMap[id.slice(7)] || id.slice(7)) : id;
+      userBinds[nid] = keys.filter(k => typeof k === "string");
+    }
+    saveBinds();
+  } catch (err) { console.error(err); }
+}
 
 render().catch(err => { console.error(err); $("#count").textContent = "Storage is unavailable in this browser."; });
 </script>
