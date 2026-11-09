@@ -24,14 +24,14 @@ body{background:var(--bg);color:var(--text);font:400 15px/1.5 var(--sans)}
 button,input{font:inherit;color:inherit}
 :focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 
-.top{display:flex;align-items:center;gap:16px;justify-content:space-between;padding:22px clamp(16px,4vw,48px) 8px;max-width:1280px;margin:0 auto}
+.top{display:flex;align-items:center;gap:16px;justify-content:space-between;padding:22px clamp(16px,4vw,48px) 8px;max-width:var(--maxw,1280px);margin:0 auto}
 h1{font:800 clamp(26px,4vw,38px)/1.1 var(--serif);margin:0;letter-spacing:.01em}
 .sub{color:var(--muted);margin:4px 0 0;font-size:14px}
 .btn{display:inline-flex;align-items:center;gap:8px;min-height:42px;padding:0 20px;border-radius:999px;border:1px solid var(--accent);background:var(--accent);color:var(--accent-text);font-weight:600;cursor:pointer}
 .btn:hover{filter:brightness(1.08)}
 .btn.ghost{background:transparent;color:var(--text);border-color:var(--line)}
 .actions{display:flex;gap:10px;flex-wrap:wrap;justify-content:flex-end}
-.sources{max-width:1280px;margin:6px auto 0;padding:0 clamp(16px,4vw,48px);display:flex;align-items:center;gap:8px;overflow-x:auto;white-space:nowrap}
+.sources{max-width:var(--maxw,1280px);margin:6px auto 0;padding:0 clamp(16px,4vw,48px);display:flex;align-items:center;gap:8px;overflow-x:auto;white-space:nowrap}
 .sources .lbl{color:var(--muted);font-size:13px;margin-right:4px}
 .sources .hint{color:var(--muted);font-size:13px}
 .tab{cursor:pointer;padding:6px 14px;border-radius:999px;border:1px solid var(--line);background:transparent;font-size:14px}
@@ -39,13 +39,13 @@ h1{font:800 clamp(26px,4vw,38px)/1.1 var(--serif);margin:0;letter-spacing:.01em}
 .tab:hover{border-color:var(--accent)}
 .tab.on{background:var(--accent);color:var(--accent-text);border-color:var(--accent)}
 .tab.on small{color:inherit;opacity:.85}
-.toolbar{max-width:1184px;margin:12px auto 0;padding:0 2px;display:flex;gap:10px;flex-wrap:wrap}
+.toolbar{max-width:var(--maxw-in,1184px);margin:12px auto 0;padding:0 2px;display:flex;gap:10px;flex-wrap:wrap}
 .inp{min-height:38px;padding:0 12px;border-radius:10px;border:1px solid var(--line);background:var(--surface);color:var(--text);max-width:100%}
 #search{flex:1;min-width:180px}
 .ser{color:var(--muted);font-size:12px;margin-top:-4px;overflow-wrap:anywhere}
 
 #detail{min-height:100vh}
-.dwrap{max-width:1100px;margin:0 auto;padding:18px clamp(16px,4vw,48px) 60px}
+.dwrap{max-width:var(--maxw-d,1100px);margin:0 auto;padding:18px clamp(16px,4vw,48px) 60px}
 .dgrid{display:grid;grid-template-columns:minmax(160px,260px) 1fr;gap:24px;margin-top:14px}
 @media(max-width:640px){.dgrid{grid-template-columns:1fr}.dleft{max-width:260px}}
 .dcover{display:block;width:100%;padding:0;border:0;background:var(--line);cursor:pointer;aspect-ratio:2/3;border-radius:3px 8px 8px 3px;overflow:hidden;box-shadow:0 6px 18px rgba(10,14,40,.22)}
@@ -132,8 +132,8 @@ button.chip:hover{border-color:var(--accent);color:var(--accent)}
 #exportDlg .opt b{display:block}
 #exportDlg .opt span{color:var(--muted);font-size:13px}
 
-main{max-width:1280px;margin:0 auto;padding:16px clamp(16px,4vw,48px) 56px}
-#dropZone{max-width:1184px;margin:14px auto 0;padding:14px 18px;border:1.5px dashed var(--line);border-radius:12px;color:var(--muted);text-align:center;transition:background .15s,border-color .15s}
+main{max-width:var(--maxw,1280px);margin:0 auto;padding:16px clamp(16px,4vw,48px) 56px}
+#dropZone{max-width:var(--maxw-in,1184px);margin:14px auto 0;padding:14px 18px;border:1.5px dashed var(--line);border-radius:12px;color:var(--muted);text-align:center;transition:background .15s,border-color .15s}
 #dropZone.dragover{border-color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent);color:var(--text)}
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(148px,1fr));gap:28px 22px}
 .item{position:relative;display:flex;flex-direction:column;gap:8px}
@@ -177,19 +177,74 @@ main{max-width:1280px;margin:0 auto;padding:16px clamp(16px,4vw,48px) 56px}
 .toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%);z-index:30;background:var(--text);color:var(--bg);padding:10px 18px;border-radius:10px;max-width:90vw;font-size:14px}
 .toast[hidden]{display:none}
 @media (prefers-reduced-motion:reduce){.cover{transition:none}.cover:hover{transform:none}}
+
+.autopair{display:inline-flex;gap:6px;align-items:center}
+.titlerow{display:flex;align-items:center;gap:12px}
+.sqbtn{width:42px;height:42px;flex:none;display:inline-flex;align-items:center;justify-content:center;padding:0;border-radius:10px;border:1px solid var(--line);background:transparent;color:var(--text);cursor:pointer}
+.sqbtn:hover{border-color:var(--accent);color:var(--accent)}
+.sqbtn svg{width:22px;height:22px;display:block}
+.btn.danger{background:var(--danger);border-color:var(--danger);color:#fff}
+.btn.ghost.danger{background:transparent;color:var(--danger);border-color:var(--danger)}
+.badge{display:inline-block;padding:0 7px;border-radius:999px;border:1px solid var(--line);font-size:11px;font-weight:600;line-height:18px;color:var(--muted)}
+.badge.linked{border-color:var(--accent);color:var(--accent)}
+.badge.warn{border-color:var(--danger);color:var(--danger)}
+.auth{color:var(--muted);font-size:13px;margin-top:-4px;overflow-wrap:anywhere}
+#wipeDlg input{width:100%;margin:6px 0 12px}
+
+.booru-grid{max-width:var(--maxw,1280px);margin:18px auto;padding:0 clamp(16px,4vw,48px);display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:12px}
+.booru-card{position:relative;min-width:0;border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--surface);cursor:pointer;text-align:left;padding:0;color:inherit}
+.booru-card:hover{border-color:var(--accent)}
+.booru-media{display:block;width:100%;height:210px;object-fit:cover;background:var(--bg)}
+.booru-card .kind{position:absolute;top:8px;left:8px;background:rgba(0,0,0,.65);color:#fff;font-size:11px;padding:1px 8px;border-radius:999px}
+.booru-card .booru-meta{padding:8px 10px;font-size:12px;color:var(--muted);overflow-wrap:anywhere}
+.booru-grid .empty{grid-column:1/-1;width:100%}
+#booruLightbox{max-width:min(96vw,1200px);max-height:96vh;border:1px solid var(--line);border-radius:14px;background:var(--surface);color:var(--text)}
+#booruLightbox .lbbar{display:flex;gap:8px;align-items:center}
+#booruLightbox .lbbar .grow{flex:1}
+#booruLarge,#booruVideo{display:block;max-width:90vw;max-height:78vh;object-fit:contain;margin:10px auto}
+#booruLarge[hidden],#booruVideo[hidden]{display:none}
+#booruLightbox p{margin:8px;text-align:center;overflow-wrap:anywhere}
+[hidden]{display:none !important}
+html[data-layout="wide"]{--maxw:none;--maxw-in:none;--maxw-d:none}
+html[data-layout="wide"] .grid{grid-template-columns:repeat(auto-fill,minmax(clamp(148px,7vw,240px),1fr))}
+html[data-layout="wide"] .booru-grid{grid-template-columns:repeat(auto-fill,minmax(clamp(170px,8vw,280px),1fr))}
+.booru-card{content-visibility:auto;contain-intrinsic-size:auto 260px}
+.booru-media.missing{opacity:.5}
+.booru-media.ph{display:flex;align-items:center;justify-content:center;color:var(--muted);font-size:13px}
+.booru-card .kind.off{background:var(--danger)}
+.bpager{max-width:var(--maxw,1280px);margin:12px auto 0;padding:0 clamp(16px,4vw,48px)}
+.binfo{margin-top:10px;padding-top:10px;border-top:1px solid var(--line);text-align:left}
+.binfo .dtitle{font-size:18px}
+#booruLightbox{overflow:auto}
+/* admin: selection boxes, size details, nested-folder mark */
+.selbar{max-width:var(--maxw-in,1184px);margin:10px auto 0;padding:0 2px;display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.selbar .cnt{color:var(--muted);font-size:13px}
+.booru-card .selbox{position:absolute;top:8px;right:8px;width:24px;height:24px;border-radius:6px;border:2px solid #fff;background:rgba(0,0,0,.55);color:#fff;display:flex;align-items:center;justify-content:center;font-size:16px;line-height:1;cursor:pointer;z-index:2}
+.booru-card .selbox.on{background:var(--danger);border-color:var(--danger)}
+.booru-card.picked{border-color:var(--danger);box-shadow:0 0 0 2px var(--danger)}
+.booru-card .bsize{margin-top:2px;color:var(--text);font-weight:600}
+.badge.nest{border-color:var(--accent);color:var(--accent)}
 </style>
 </head>
 <body>
 <div id="libraryView">
 <header class="top">
   <div>
-    <h1>Manga Library</h1>
+    <div class="titlerow">
+      <h1>Manga Library</h1>
+      <button class="sqbtn" id="booruTab" type="button" title="Booru Gallery" aria-label="Open Booru Gallery"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="3" width="7.5" height="7.5" rx="1.5"/><rect x="3" y="13.5" width="7.5" height="7.5" rx="1.5"/><rect x="13.5" y="13.5" width="7.5" height="7.5" rx="1.5"/></svg></button>
+    </div>
     <p class="sub" id="count">Loading…</p>
   </div>
   <div class="actions">
     <button class="btn ghost" id="settingsBtn" type="button">Settings</button>
+    <span class="autopair"><button class="btn ghost" id="autoLinkBtn" type="button" title="Reconnect your saved folder path without opening the file explorer">Auto-link folder</button><button class="sqbtn" id="autoPathBtn" type="button" title="Type the folder path" aria-label="Type the folder path">✎</button></span>
+    <button class="btn ghost" id="linkFolderBtn" type="button">Link manga folder</button>
+    <input id="linkPicker" type="file" webkitdirectory directory multiple hidden>
     <button class="btn ghost" id="exportBtn" type="button">Export library</button>
     <label class="btn ghost" id="backupBtn" tabindex="0">Import backup<input id="backupPicker" type="file" accept=".json,application/json" hidden></label>
+    <button class="btn ghost" id="adminBtn" type="button">Admin mode: off</button><button class="btn ghost" id="adminOpenBtn" type="button" hidden title="Open a manga folder with write access (hold Shift to pick a different folder)">Admin: open folder</button>
+    <button class="btn ghost danger" id="wipeBtn" type="button">Delete all saved data</button>
     <label class="btn" id="importBtn" tabindex="0">Import manga folders<input id="picker" type="file" webkitdirectory directory multiple hidden></label>
   </div>
 </header>
@@ -198,8 +253,26 @@ main{max-width:1280px;margin:0 auto;padding:16px clamp(16px,4vw,48px) 56px}
   <h2>Export library</h2>
   <p>Saves a .json file you can load again with “Import backup”.</p>
   <button class="opt" id="expFull" type="button"><b>Full backup</b><span>Folders, covers, every page, tags and reading progress. Can be a very large file.</span></button>
-  <button class="opt" id="expLite" type="button"><b>Tags &amp; progress only</b><span>Folder list, tags, series, dates and reading progress. Small file; applies to folders already in the library.</span></button>
+  <button class="opt" id="expLite" type="button"><b>Tags &amp; progress only</b><span>Folder list, tags, series, dates, reading progress and linked page addresses. Small file; restoring it recreates empty entries for linked folders and updates the rest.</span></button>
   <button class="btn ghost" id="expCancel" type="button">Cancel</button>
+</dialog>
+<dialog id="autoDlg" class="dlg">
+  <div class="dhead"><h2 id="autoTitle">Auto-link folder</h2><button class="btn ghost small" id="autoClose" type="button">Close</button></div>
+  <p>Type the location of the folder you normally pick (for example D:\Manga or /home/me/Manga). After that, the Auto-link button reconnects it with one press and no file explorer. This works when this page is opened as a local file (file://), using the file list saved the last time you picked the folder. Leave it blank if this HTML file sits next to the folder.</p>
+  <input class="inp" id="autoPath" type="text" placeholder="D:\Manga" aria-label="Folder path" style="width:100%;margin-bottom:10px">
+  <div class="fbtns"><button class="btn small" id="autoGo" type="button">Save and link</button></div>
+</dialog>
+<dialog id="adminDlg" class="dlg">
+  <h2>Admin mode</h2>
+  <p>Admin mode lets this page rename and delete the linked files on your disk. Enter the password to turn it on.</p>
+  <input class="inp" id="adminPass" type="password" placeholder="Password" autocomplete="off" aria-label="Password">
+  <div class="fbtns"><button class="btn small" id="adminGo" type="button">Turn on</button><button class="btn ghost small" id="adminCancel" type="button">Cancel</button></div>
+</dialog>
+<dialog id="wipeDlg" class="dlg">
+  <h2>Delete all saved data</h2>
+  <p>This permanently removes every manga, stored page, cover, tag, reading progress, presaved tag and keybind from this browser. Original folders on your disk are not touched. Enter the password to continue.</p>
+  <input class="inp" id="wipePass" type="password" placeholder="Password" autocomplete="off" aria-label="Password">
+  <div class="fbtns"><button class="btn danger small" id="wipeGo" type="button">Delete everything</button><button class="btn ghost small" id="wipeCancel" type="button">Cancel</button></div>
 </dialog>
 <div id="dropZone" aria-label="Multiple folder import">Or drag and drop multiple manga folders here to import them together. You can also choose a parent folder with the Import button.</div>
 <div class="toolbar">
@@ -213,6 +286,22 @@ main{max-width:1280px;margin:0 auto;padding:16px clamp(16px,4vw,48px) 56px}
 </div>
 <main><div id="shelf"></div></main>
 </div>
+<section id="booruView" hidden>
+  <header class="top"><div><h1>Booru Gallery</h1><p class="sub" id="booruCount">Choose a folder of images, GIFs and videos</p></div>
+    <div class="actions"><button class="btn ghost" id="booruBack" type="button">← Manga Library</button><button class="btn ghost" id="booruSettings" type="button">Settings</button><button class="btn ghost" id="booruAdmin" type="button">Admin mode: off</button><button class="btn ghost" id="booruAdminOpen" type="button" hidden title="Open a media folder with write access (hold Shift to pick a different folder)">Admin: open folder</button><button class="btn" id="booruChoose" type="button">Choose media folder</button><input id="booruPicker" type="file" webkitdirectory directory multiple hidden></div>
+  </header>
+  <div class="toolbar"><input class="inp" id="booruSearch" type="search" placeholder="Search filename, tags, artist, series, characters…" aria-label="Search gallery">
+    <select class="inp" id="booruType" aria-label="Media type"><option value="all">All media</option><option value="image">Images</option><option value="gif">GIFs</option><option value="video">Videos</option></select>
+    <select class="inp" id="booruSort" aria-label="Sort"><option value="name">Filename</option><option value="folder">Subfolder</option><option value="new">Newest</option><option value="size">Largest</option></select></div>
+  <div class="selbar" id="booruSelBar" hidden><span class="cnt" id="booruSelCount">0 selected</span><button class="btn ghost small" id="booruSelPage" type="button">Select all on this page</button><button class="btn ghost small" id="booruSelClear" type="button">Clear selection</button><button class="btn ghost small danger" id="booruSelDelete" type="button">Delete selected files</button></div>
+  <nav class="pager bpager" id="booruPagerTop" aria-label="Gallery pages"></nav>
+  <main><div id="booruGrid" class="booru-grid"></div></main>
+  <nav class="pager bpager" id="booruPagerBottom" aria-label="Gallery pages"></nav>
+</section>
+<dialog id="booruLightbox">
+  <div class="lbbar"><button class="btn ghost small" id="booruPrev" type="button">← Prev</button><button class="btn ghost small" id="booruNext" type="button">Next →</button><span class="grow"></span><button class="btn ghost small" id="booruRename" type="button" hidden>Rename file</button><button class="btn ghost small danger" id="booruDelete" type="button" hidden>Delete file</button><button class="btn ghost small" id="booruClose" type="button">Close</button></div>
+  <img id="booruLarge" alt="" hidden><video id="booruVideo" controls loop playsinline hidden></video><p id="booruCaption"></p><div id="booruInfo" class="binfo"></div>
+</dialog>
 
 <section id="detail" hidden aria-label="Folder details">
   <div class="dwrap">
@@ -227,6 +316,7 @@ main{max-width:1280px;margin:0 auto;padding:16px clamp(16px,4vw,48px) 56px}
     <div class="gtools">
       <button class="btn ghost small" id="gReverse" type="button" aria-pressed="false">Reverse order</button>
       <button class="btn ghost small" id="gCover" type="button" aria-pressed="false">Choose cover</button>
+      <button class="btn ghost small" id="gAdd" type="button" hidden title="Copy more images or videos into this manga’s folder (admin mode)">Add files to folder</button>
       <span class="hint" id="gHint"></span>
     </div>
     <div class="gbox" id="gbox"><div class="thumbs" id="thumbs"></div></div>
@@ -257,12 +347,27 @@ main{max-width:1280px;margin:0 auto;padding:16px clamp(16px,4vw,48px) 56px}
       </label>
     </div>
     <button id="rCover" title="Use this page as the folder cover">Set cover</button>
+    <button id="rRename" title="Rename this page’s file on disk (admin mode)" hidden>Rename file</button><button id="rDelete" title="Delete this page’s file from disk (admin mode)" hidden>Delete file</button>
     <label><input type="checkbox" id="rtl"> Right to left</label>
   </div>
   <div id="stage"><img id="page" class="media" alt=""><video id="video" class="media" controls loop muted playsinline hidden></video><span id="msg"></span></div>
 </section>
 <dialog id="settingsDlg" class="dlg">
   <div class="dhead"><h2>Settings</h2><button class="btn ghost small" id="setClose" type="button">Close</button></div>
+  <h3>Booru gallery</h3>
+  <p>Only this many items are loaded on each page of the Booru Gallery. Lower numbers use less memory and keep large folders smooth (1–500).</p>
+  <div class="fbtns" style="align-items:center;margin:0 0 8px"><label for="booruPer">Items per page</label><input class="inp" id="booruPer" type="number" min="1" max="500" step="1" style="width:100px"></div>
+  <label style="display:flex;gap:8px;align-items:center;margin-bottom:6px"><input type="checkbox" id="booruHover"> Play video previews when hovering</label>
+  <h3>Page width</h3>
+  <p>“Stay as it is” keeps the centred, fixed-width layout. “Stretch” uses the whole browser window, which suits wide screens such as 3440 × 1440.</p>
+  <select class="inp" id="layoutSel" aria-label="Page width"><option value="fixed">Stay as it is (fixed width)</option><option value="wide">Stretch with the browser window</option></select>
+  <h3>Admin mode</h3>
+  <p>Lets this page rename and delete linked files, and add files to a manga folder, using the File System Access API. It needs Chrome or Edge (Firefox doesn’t support the API) and a folder opened with “Admin: open folder”.</p>
+  <button class="btn ghost small" id="setAdmin" type="button">Admin mode: off</button>
+  <h3>Saved folder path</h3>
+  <p>Firefox can’t keep folder access between visits, but it can remember where your folder is. Enter the location of the folder you pick under “Link manga folder” (for example D:\Manga or /home/me/Manga). When this page is opened as a local file, linked pages then load by themselves. Leave it blank if this HTML file sits next to that folder.</p>
+  <input class="inp" id="pathBase" type="text" placeholder="D:\Manga" aria-label="Saved folder path" style="width:100%;margin-bottom:8px">
+  <button class="btn small" id="pathSave" type="button">Save path</button>
   <h3>Presaved tags</h3>
   <p>One-click buttons that add a tag, language, character and so on to a folder. They appear on the folder page next to Tags.</p>
   <button class="btn ghost small" id="setPresets" type="button">Manage presaved tags…</button>
@@ -293,16 +398,18 @@ main{max-width:1280px;margin:0 auto;padding:16px clamp(16px,4vw,48px) 56px}
 "use strict";
 const $ = s => document.querySelector(s);
 const extOf = n => (n.split(".").pop() || "").toLowerCase();
-const MIME = {png:"image/png",jpg:"image/jpeg",jpeg:"image/jpeg",gif:"image/gif",webp:"image/webp",avif:"image/avif",bmp:"image/bmp",mp4:"video/mp4"};
+const MIME = {png:"image/png",jpg:"image/jpeg",jpeg:"image/jpeg",gif:"image/gif",webp:"image/webp",avif:"image/avif",bmp:"image/bmp",jfif:"image/jpeg",apng:"image/apng",mp4:"video/mp4",m4v:"video/mp4",webm:"video/webm",mov:"video/quicktime",ogv:"video/ogg"};
 const isVideo = f => (MIME[extOf(f.name)] || "").startsWith("video/");
 const collator = new Intl.Collator(undefined, {numeric:true, sensitivity:"base"});
 
-/* ── Storage (IndexedDB: covers + pages stay on this device) ── */
+/* ── Storage: metadata and covers in IndexedDB; linked page files remain in source folders ── */
 const dbp = new Promise((res, rej) => {
-  const r = indexedDB.open("manga-library", 1);
+  const r = indexedDB.open("manga-library", 2);
   r.onupgradeneeded = () => {
-    r.result.createObjectStore("manga", {keyPath:"id"});
-    r.result.createObjectStore("pages", {keyPath:["mangaId","index"]});
+    const d = r.result;
+    if (!d.objectStoreNames.contains("manga")) d.createObjectStore("manga", {keyPath:"id"});
+    if (!d.objectStoreNames.contains("pages")) d.createObjectStore("pages", {keyPath:["mangaId","index"]});
+    if (!d.objectStoreNames.contains("booru")) d.createObjectStore("booru", {keyPath:"id"});   // booru item details (tags, artist, …)
   };
   r.onsuccess = () => res(r.result);
   r.onerror = () => rej(r.error);
@@ -358,6 +465,114 @@ function placeholderCover() {
 
 const filePaths = new WeakMap();   // dropped File -> its path inside the dropped folder
 const pathOf = f => filePaths.get(f) || f.webkitRelativePath || f.name;
+const linkedFiles = new Map(); // manga id -> File[]; in-memory only in Firefox
+const linkedObjectUrls = new Set();
+function linkedFile(m, index) { const a = linkedFiles.get(m.id); return a && a[index] || null; }
+// Find the library entry a linked folder belongs to, whatever level of the tree the user picked
+// (the parent folder, the "Main" folder, or one single manga folder, with or without chapter sub folders).
+function matchLinkTarget(dirs, known) {
+  const low = dirs.map(d => d.toLowerCase());
+  for (let i = 0; i < low.length; i++) {
+    const hits = known.filter(m => m.id.split("/").pop() === low[i]);
+    if (!hits.length) continue;
+    const parent = i > 0 ? low[i - 1] : "";
+    const exact = hits.find(m => (m.source || "").toLowerCase() === parent);
+    if (exact) return exact;
+    const loose = hits.filter(m => !m.source || low.includes(m.source.toLowerCase()));
+    if (loose.length === 1) return loose[0];
+    if (hits.length === 1) return hits[0];
+  }
+  return null;
+}
+/* Saved-path mode: the page addresses are remembered, and when this file is opened as a local file (file://)
+   the browser can load them directly, so no folder picking is needed after a reload. */
+let pathBase = "";
+try { pathBase = localStorage.getItem("manga-pathbase") || ""; } catch (_) {}
+function normBase(v) {
+  v = (v || "").trim().replace(/\\/g, "/");
+  if (!v) return "";
+  if (/^file:/i.test(v)) { /* already a URL */ }
+  else if (/^[A-Za-z]:/.test(v)) v = "file:///" + v;
+  else if (v.startsWith("/")) v = "file://" + v;
+  return v.endsWith("/") ? v : v + "/";
+}
+const pathBad = new Set();   // manga whose saved path was checked and not found
+const pathReady = m => !!(m && m.linkedFolder && Array.isArray(m.pagePaths) && m.pagePaths.length && location.protocol === "file:" && !pathBad.has(m.id));
+function fileUrl(p, baseRaw) {
+  const segs = p.split("/").filter(Boolean);
+  const base = normBase(baseRaw);
+  if (base) segs.shift();   // the saved folder location already points at the folder that was linked
+  return (base ? encodeURI(base) : "") + segs.map(encodeURIComponent).join("/");
+}
+function pathUrl(m, index) {
+  const p = m.pagePaths && m.pagePaths[index];
+  return p ? fileUrl(p, pathBase) : null;
+}
+const isVideoName = n => (MIME[extOf(n || "")] || "").startsWith("video/");
+let pathFailAt = 0;
+function notePathFail() {
+  if (Date.now() - pathFailAt < 8000) return; pathFailAt = Date.now();
+  toast("Couldn’t load images from the saved path. Check Settings → Saved folder path, or link the folder again.");
+}
+const isUnlinked = m => !!(m && m.linkedFolder && !linkedFiles.has(m.id) && !pathReady(m));
+const storageLabel = m => m.linkedFolder ? (linkedFiles.has(m.id) ? "Linked" : pathReady(m) ? "Linked · path" : "Linked · reconnect") : "Stored";
+
+async function linkFolderFiles(fileList) {
+  const files = [...fileList].filter(f => MIME[extOf(f.name)]).sort((a,b) => collator.compare(pathOf(a),pathOf(b)));
+  if (!files.length) { toast("No supported images or videos found in that folder."); return; }
+  const existing = await existingFolders(), db = await dbp;
+  const known = [...existing.values()];
+  const groups = new Map();
+  for (const f of files) {
+    const parts = pathOf(f).split("/").filter(Boolean);
+    const m = matchLinkTarget(parts.slice(0, -1), known);
+    let key, g;
+    if (m) { key = m.id; g = groups.get(key) || {m, files:[]}; }
+    else { const c = classifyPath(parts); key = "new:" + folderId(c.source, c.title); g = groups.get(key) || {m:null, source:c.source, title:c.title, files:[]}; }
+    groups.set(key, g); g.files.push(f);
+  }
+  let linked = 0, pages = 0, created = 0;
+  for (const g of groups.values()) {
+    const arr = g.files;   // already in path order
+    const typed = f => f.slice(0, f.size, MIME[extOf(f.name)]);
+    let m = g.m;
+    if (!m) {
+      const coverFile = arr.find(f => !isVideo(f));
+      const cover = coverFile ? typed(coverFile) : ((await videoFrame(typed(arr[0]))) || await placeholderCover());
+      const modified = arr.reduce((mx, f) => Math.max(mx, f.lastModified || 0), 0) || Date.now();
+      m = ensureMeta({id:folderId(g.source, g.title), title:g.title, source:g.source || "", cover, pageCount:arr.length, lastPage:0, added:Date.now(), date:modified, customCover:false});
+      created++;
+    }
+    if (g.m && m.coverPending) {   // entry restored from a tags backup: it only has a blank cover so far
+      const cf = arr.find(f => !isVideo(f));
+      m.cover = cf ? typed(cf) : ((await videoFrame(typed(arr[0]))) || m.cover);
+      delete m.coverPending;
+    }
+    linkedFiles.set(m.id, arr);
+    m.pageCount = arr.length;
+    m.linkedFolder = true;
+    const tl = m.title.toLowerCase(), idl = m.id.split("/").pop();
+    if (filesNested(arr, idl) || filesNested(arr, tl)) m.nested = true; else delete m.nested;
+    m.pagePaths = arr.map(pathOf);
+    m.lastPage = Math.max(0, Math.min(m.lastPage || 0, arr.length - 1));
+    // The page files stay in the source folder; any copies stored earlier are dropped.
+    const tx = db.transaction(["manga","pages"], "readwrite");
+    tx.objectStore("pages").delete(IDBKeyRange.bound([m.id,0], [m.id,Number.MAX_SAFE_INTEGER]));
+    tx.objectStore("manga").put(m);
+    await done(tx);
+    linked++; pages += arr.length;
+  }
+  await render();
+  // If a folder page is open, show its pages straight away.
+  if (dm && !$("#detail").hidden) {
+    const fresh = library.find(x => x.id === dm.id);
+    if (fresh) { thumbUrls.forEach(u => u && URL.revokeObjectURL(u)); thumbUrls.clear(); dm = fresh; updateProgress(); renderThumbs(); }
+  }
+  toast("Linked " + linked + (linked === 1 ? " manga" : " manga") + " (" + pages + " pages)" + (created ? ", " + created + " new" : "") + ". Images stay in their original folder.");
+}
+$("#linkFolderBtn").addEventListener("click",()=>$("#linkPicker").click());
+$("#linkPicker").addEventListener("change",async e=>{try{await linkFolderFiles(e.target.files);}catch(err){console.error(err);toast("Could not link folders: "+(err.message||err));}e.target.value="";});
+
 
 // "Main/Sub/page.jpg" -> main folder "Main" (a "Read from" tab) containing manga "Sub".
 // "Sub/page.jpg" -> a single manga folder with no main folder.
@@ -365,6 +580,16 @@ function classifyPath(parts) {
   if (parts.length >= 3) return {source:parts[0], title:parts[1]};
   if (parts.length === 2) return {source:"", title:parts[0]};
   return {source:"", title:"Imported Manga"};
+}
+// A manga folder that holds no pages of its own, only another folder (e.g. Manga/Title/Title/001.jpg), is "nested":
+// the pages inside the inner folder are used, and the manga is marked so it can be searched for.
+function filesNested(files, titleLower) {
+  if (!files.length) return false;
+  return files.every(f => {
+    const dirs = pathOf(f).split("/").filter(Boolean).slice(0, -1).map(d => d.toLowerCase());
+    const i = dirs.indexOf(titleLower);
+    return i >= 0 && i < dirs.length - 1;
+  });
 }
 const folderId = (source, title) => (source ? source.toLowerCase() + "/" : "") + title.toLowerCase();
 function findExisting(existing, source, title) {
@@ -420,6 +645,8 @@ async function importGroups(groups, skipped = 0, existing = null) {
       lastPage: prev ? Math.min(prev.lastPage || 0, files.length - 1) : 0,
       added: prev ? prev.added : Date.now(), date: modified
     });
+    rec.linkedFolder = false; delete rec.pagePaths; linkedFiles.delete(id);
+    if (filesNested(files, title.toLowerCase())) rec.nested = true; else delete rec.nested;
     const t = db.transaction(["manga", "pages"], "readwrite");
     const pages = t.objectStore("pages");
     pages.delete(IDBKeyRange.bound([id, 0], [id, Number.MAX_SAFE_INTEGER]));
@@ -507,7 +734,7 @@ $("#importBtn").addEventListener("keydown", e => { if (e.key === "Enter" || e.ke
    One record per line, but the whole file is still valid JSON:
    {"format":...,"manga":[ <one manga per line> ],"pages":[ <one page per line, base64> ]}
    so huge libraries can be written and read as a stream. */
-const META_KEYS = ["source","artist","group","type","language","series","seriesNumber","characters","tags","date","customCover","reversed"];
+const META_KEYS = ["nested","source","artist","group","type","language","series","seriesNumber","characters","tags","date","customCover","reversed","linkedFolder","pagePaths"];
 const pickMeta = m => { const o = {}; for (const k of META_KEYS) if (m[k] !== undefined) o[k] = m[k]; return o; };
 const blobToB64 = blob => new Promise((res, rej) => {
   const r = new FileReader();
@@ -544,9 +771,14 @@ async function exportLibrary(withImages) {
   try {
     const db = await dbp;
     const list = await wrap(db.transaction("manga").objectStore("manga").getAll());
+    if (withImages && list.some(m => m.linkedFolder)) {
+      const proceed = confirm("Some manga are folder-linked. Their original pages are not stored in this app and will not be included in this JSON backup. Keep the source folders and use a metadata backup, or export the linked folders separately. Continue with a partial JSON backup?");
+      if (!proceed) return;
+    }
     list.sort((a, b) => a.added - b.added);
+    const booruAll = (await wrap(db.transaction("booru").objectStore("booru").getAll())).filter(r => !String(r.id).startsWith("__handle__:"));
     await write('{"format":"manga-library","version":1,"exported":' + JSON.stringify(new Date().toISOString()) +
-                ',"includesImages":' + withImages + ',"settings":' + JSON.stringify({presets, keybinds:userBinds}) + ',"manga":[\n');
+                ',"includesImages":' + withImages + ',"settings":' + JSON.stringify({presets, keybinds:userBinds, booru:booruAll.map(({thumb, ...r}) => r)}) + ',"manga":[\n');
     for (let i = 0; i < list.length; i++) {
       const m = list[i];
       const rec = {id:m.id, title:m.title, pageCount:m.pageCount, lastPage:m.lastPage || 0, added:m.added, ...pickMeta(m)};
@@ -608,7 +840,7 @@ async function importBackup(file) {
       let hdr = null;
       try { hdr = JSON.parse(line.replace(/,"manga":\[$/, "}")); } catch (_) {}
       includesImages = hdr ? hdr.includesImages === true : /"includesImages":true/.test(line);
-      if (hdr && hdr.settings) importSettings(hdr.settings);
+      if (hdr && hdr.settings) { importSettings(hdr.settings); await importBooruMeta(hdr.settings.booru); }
       sawHeader = true; section = "manga"; continue;
     }
     if (line.startsWith("],") && line.includes('"pages":[')) {
@@ -644,7 +876,7 @@ async function importBackup(file) {
   if (!sawHeader) throw new Error("Not a Manga Library backup file.");
   await flush();
 
-  let imported = 0, failed = 0, progress = 0, missing = 0;
+  let imported = 0, failed = 0, progress = 0, missing = 0, restored = 0;
   if (includesImages) {
     const t = db.transaction(["manga", "pages"], "readwrite");
     for (const [id, m] of wanted) {
@@ -658,10 +890,19 @@ async function importBackup(file) {
     }
     await done(t);
   } else {
+    const ph = await placeholderCover();
     const t = db.transaction("manga", "readwrite");
     for (const m of manga) {
       const prev = existing.get(m.id);
-      if (!prev) { missing++; continue; }
+      if (!prev) {
+        // Linked folders keep their page addresses in the backup, so the entry (tags, series, progress) can be
+        // recreated empty; the cover and pages come back when the folder is linked or the saved path loads.
+        if (m.linkedFolder && Array.isArray(m.pagePaths) && m.pagePaths.length) {
+          t.objectStore("manga").put({id:m.id, title:m.title, cover:ph, coverPending:true, pageCount:m.pageCount, lastPage:m.lastPage || 0, added:m.added || Date.now(), ...pickMeta(m), customCover:false});
+          restored++;
+        } else missing++;
+        continue;
+      }
       prev.lastPage = Math.max(0, Math.min(m.lastPage || 0, prev.pageCount - 1));
       const meta = pickMeta(m); delete meta.customCover;   // lite backups carry no cover images
       Object.assign(prev, meta);
@@ -671,7 +912,7 @@ async function importBackup(file) {
   }
   const bits = includesImages
     ? [imported + " restored", skipped && skipped + " skipped (already imported)", failed && failed + " incomplete"]
-    : [progress + " progress restored", missing && missing + " not in library"];
+    : [progress + " progress restored", restored && restored + " empty entries recreated (link the folder to fill them)", missing && missing + " not in library"];
   toast("Backup: " + bits.filter(Boolean).join(" · "));
   render();
 }
@@ -715,7 +956,8 @@ function ensureMeta(m) {
 const numLabel = n => /^\d+(\.\d+)?$/.test(n) ? "#" + n : n;
 const seriesLabel = m => !m.series ? "N/A" : (m.seriesNumber ? m.series + " — " + numLabel(m.seriesNumber) : m.series);
 const fmtDate = ms => ms ? new Date(ms).toLocaleString(undefined, {year:"numeric", month:"short", day:"numeric", hour:"numeric", minute:"2-digit"}) : "N/A";
-const haystack = m => [m.title, m.artist, m.group, m.type, m.language, m.series, m.seriesNumber, m.source, ...m.characters, ...m.tags].join("\n").toLowerCase();
+const NESTED_TAG = "nested folder";   // searchable label for manga whose pages were found inside a sub folder of the manga folder
+const haystack = m => [m.title, m.artist, m.group, m.type, m.language, m.series, m.seriesNumber, m.source, m.nested ? NESTED_TAG : "", ...m.characters, ...m.tags].join("\n").toLowerCase();
 const SORTS = {
   added: (a, b) => b.added - a.added,
   date: (a, b) => (b.date || 0) - (a.date || 0),
@@ -768,6 +1010,11 @@ function renderShelf() {
   }
   if (!list.length) { shelf.replaceChildren(h("div", {class:"empty"}, h("h2", {}, "No matches"), h("p", {}, "Nothing in this tab matches your search."))); return; }
 
+  const needsRelink = list.some(isUnlinked);
+  if (needsRelink) shelf.append(h("div",{class:"empty"},
+    h("h2",{},"Reconnect your manga folder"),
+    h("p",{},"Firefox does not retain folder access after the page is closed. Your metadata and progress are safe; select the original parent folder again to reconnect the image files."),
+    h("button",{class:"btn",type:"button",onclick:()=>$("#linkPicker").click()},"Relink manga folder")));
   const grid = h("div", {class:"grid"});
   for (const m of list) {
     const url = URL.createObjectURL(m.cover); coverUrls.push(url);
@@ -789,8 +1036,11 @@ function renderShelf() {
       await done(t); toast("Removed ‘" + m.title + "’"); render();
     });
     item.append(cover, h("h3", {class:"name"}, m.title));
+    if (m.artist) item.append(h("div", {class:"auth"}, m.artist));
     if (m.series) item.append(h("div", {class:"ser"}, seriesLabel(m)));
-    item.append(h("div", {class:"meta"}, h("span", {}, m.lastPage > 0 ? "Page " + (m.lastPage + 1) + " of " + m.pageCount : m.pageCount + " pages"), del));
+    const st = storageLabel(m);
+    if (adminOn) item.append(h("div", {class:"ser"}, "Folder size: " + mangaSizeLabel(m)));
+    item.append(h("div", {class:"meta"}, h("span", {}, (m.lastPage > 0 ? "Page " + (m.lastPage + 1) + " of " + m.pageCount : m.pageCount + " pages") + " · ", h("span", {class:"badge " + (!m.linkedFolder ? "" : (linkedFiles.has(m.id) || pathReady(m)) ? "linked" : "warn"), title:m.linkedFolder ? "Pages are read from your original folder" : "Pages are saved inside this browser"}, st), m.nested ? h("span", {class:"badge nest", title:"Pages were found inside a sub folder of this manga's folder. Search “nested folder” to list these."}, " nested") : null), del));
     grid.append(item);
   }
   shelf.replaceChildren(grid);
@@ -799,6 +1049,756 @@ let searchTimer;
 searchEl.addEventListener("input", () => { clearTimeout(searchTimer); searchTimer = setTimeout(renderShelf, 150); });
 sortEl.addEventListener("change", () => { try { localStorage.setItem("manga-sort", sortEl.value); } catch (_) {} renderShelf(); });
 
+
+/* ── Booru gallery: images, GIFs and videos from any folder you choose ── */
+let booruFiles = [], booruUrls = [], booruShown = [], booruRoot = "", booruIdx = -1, lbUrl = null, booruIO = null;
+const kindOf = f => extOf(f.name) === "gif" ? "gif" : isVideo(f) ? "video" : "image";
+const fmtSize = n => n >= 1073741824 ? (n / 1073741824).toFixed(2) + " GB" : n >= 1048576 ? (n / 1048576).toFixed(1) + " MB" : Math.max(1, Math.round(n / 1024)) + " KB";
+let booruPage = 0, booruDirty = false, booruEditing = false, booruPer = 48, booruHover = true;
+const booruSel = new Set();   // admin: paths of the media ticked for deletion
+try {
+  const v = parseInt(localStorage.getItem("manga-booru-perpage"), 10); if (v >= 1 && v <= 500) booruPer = v;
+  booruHover = localStorage.getItem("manga-booru-hover") !== "0";
+} catch (_) {}
+// Size of a linked manga's folder (admin mode): the total of its page files.
+const mangaSizeLabel = m => { const a = linkedFiles.get(m.id); return a && a.length ? fmtSize(a.reduce((s, x) => s + x.size, 0)) : "N/A (not linked)"; };
+async function loadBooruMeta() {
+  const db = await dbp;
+  const all = await wrap(db.transaction("booru").objectStore("booru").getAll());
+  return new Map(all.filter(r => !String(r.id).startsWith("__handle__:")).map(r => [r.id, ensureMeta(r)]));   // folder handles share this store
+}
+const BOORU_DETAIL_KEYS = ["artist", "group", "type", "language", "series", "seriesNumber"];
+const hasDetails = m => BOORU_DETAIL_KEYS.some(k => m[k]) || m.tags.length > 0 || m.characters.length > 0;
+const metaFile = new WeakMap();   // details -> its File (kept out of IndexedDB)
+async function booruThumbBlob(f, kind) {
+  try {
+    const typed = f.slice(0, f.size, MIME[extOf(f.name)]);
+    if (kind === "video") return await videoFrame(typed);
+    const bmp = await createImageBitmap(typed), sc = Math.min(1, 320 / Math.max(bmp.width, bmp.height));
+    const c = document.createElement("canvas");
+    c.width = Math.max(1, Math.round(bmp.width * sc)); c.height = Math.max(1, Math.round(bmp.height * sc));
+    c.getContext("2d").drawImage(bmp, 0, 0, c.width, c.height);
+    if (bmp.close) bmp.close();
+    return await new Promise(r => c.toBlob(r, "image/jpeg", 0.8));
+  } catch (_) { return null; }
+}
+// An item with any detail (a presaved tag, artist, …) is kept as an index with a small preview;
+// when every detail is removed the index is deleted again.
+async function saveBooruMeta(meta) {
+  const db = await dbp;
+  if (!hasDetails(meta)) {
+    delete meta.thumb;
+    const t = db.transaction("booru", "readwrite"); t.objectStore("booru").delete(meta.id); await done(t); return;
+  }
+  const f = metaFile.get(meta);
+  if (!meta.thumb && f) { const b = await booruThumbBlob(f, meta.kind); if (b) meta.thumb = b; }
+  const t = db.transaction("booru", "readwrite"); t.objectStore("booru").put(meta); await done(t);
+}
+function indexItem(meta) {   // an item known only from its saved details (file not connected)
+  const parts = meta.id.split("/").filter(Boolean), name = meta.name || parts[parts.length - 1] || meta.id, ext = extOf(name);
+  meta.name = name;
+  meta.kind = meta.kind || (ext === "gif" ? "gif" : (MIME[ext] || "").startsWith("video/") ? "video" : "image");
+  if (typeof meta.folder !== "string") meta.folder = parts.slice(1, -1).join("/");
+  return {f:null, path:meta.id, name, kind:meta.kind, folder:meta.folder, meta};
+}
+async function mergeBooruIndexes() {
+  const saved = await loadBooruMeta(), have = new Set(booruFiles.map(x => x.path));
+  for (const [id, meta] of saved) if (!have.has(id) && hasDetails(meta)) booruFiles.push(indexItem(meta));
+}
+const booruReady = mergeBooruIndexes().catch(err => console.error(err));
+const booruSize = x => x.f ? x.f.size : (x.meta.size || 0);
+const booruTime = x => x.f ? (x.f.lastModified || 0) : (x.meta.mtime || 0);
+const booruHay = x => [x.path, x.meta.artist, x.meta.group, x.meta.type, x.meta.language, x.meta.series, x.meta.seriesNumber, ...x.meta.characters, ...x.meta.tags].join("\n").toLowerCase();
+async function deleteBooruMeta(id) {
+  try { const db = await dbp, t = db.transaction("booru", "readwrite"); t.objectStore("booru").delete(id); await done(t); } catch (err) { console.error(err); }
+}
+// Booru item details from a backup are merged in; items you already have details for are left alone.
+async function importBooruMeta(list) {
+  if (!Array.isArray(list) || !list.length) return;
+  const db = await dbp;
+  const have = new Set(await wrap(db.transaction("booru").objectStore("booru").getAllKeys()));
+  const t = db.transaction("booru", "readwrite"), st = t.objectStore("booru");
+  for (const r of list) if (r && typeof r.id === "string" && !r.id.startsWith("__handle__:") && !have.has(r.id)) st.put(ensureMeta(r));
+  await done(t);
+  await mergeBooruIndexes();
+}
+async function gifFirstFrame(file) {
+  let size = Math.min(file.size, 1 << 20);   // start with 1 MB; grown only if the first frame is bigger
+  for (;;) {
+    const end = gifFirstFrameEnd(new Uint8Array(await file.slice(0, size).arrayBuffer()));
+    if (end > 0) {
+      const buf = new Uint8Array(await file.slice(0, end).arrayBuffer()), out = new Uint8Array(end + 1);
+      out.set(buf); out[end] = 0x3B;   // 0x3B = GIF trailer: the file now ends after frame one
+      return new Blob([out], {type:"image/gif"});
+    }
+    if (end < 0 || size >= file.size) return null;
+    size = Math.min(file.size, size * 4);
+  }
+}
+// Returns the byte offset just after the first image's data, 0 if more bytes are needed, -1 if this isn't a readable GIF.
+function gifFirstFrameEnd(b) {
+  const n = b.length;
+  if (n >= 3 && (b[0] !== 0x47 || b[1] !== 0x49 || b[2] !== 0x46)) return -1;
+  if (n < 13) return 0;
+  let p = 13;
+  if (b[10] & 0x80) p += 3 * (1 << ((b[10] & 7) + 1));   // global colour table
+  const skipBlocks = () => { while (p < n) { const len = b[p]; p += 1 + len; if (len === 0) return true; } return false; };
+  while (p < n) {
+    const t = b[p];
+    if (t === 0x21) { p += 2; if (!skipBlocks()) return 0; }   // extension: graphic control, loop count, comment…
+    else if (t === 0x2C) {   // image descriptor
+      if (p + 10 > n) return 0;
+      const flags = b[p + 9]; p += 10;
+      if (flags & 0x80) p += 3 * (1 << ((flags & 7) + 1));   // local colour table
+      p += 1;   // LZW minimum code size
+      if (!skipBlocks()) return 0;
+      return p <= n ? p : 0;
+    } else return -1;
+  }
+  return 0;
+}
+
+// A GIF gets a one-frame still (made from the file's own bytes), and videos get a poster frame. Both are cached.
+// The animated GIF / video is only created while the pointer is over a card, and cards far off screen release their media.
+async function gifStill(f) {
+  try { const b = await gifFirstFrame(f); if (b) return b; } catch (_) {}
+  try {   // fallback: let the browser decode one frame
+    const bmp = await createImageBitmap(f.slice(0, f.size, "image/gif")), sc = Math.min(1, 420 / Math.max(bmp.width, bmp.height));
+    const c = document.createElement("canvas");
+    c.width = Math.max(1, Math.round(bmp.width * sc)); c.height = Math.max(1, Math.round(bmp.height * sc));
+    c.getContext("2d").drawImage(bmp, 0, 0, c.width, c.height);
+    if (bmp.close) bmp.close();
+    const out = await new Promise(r => c.toBlob(r, "image/png"));
+    if (out) return out;
+  } catch (_) {}
+  return null;
+}
+let booruStates = [], booruToken = 0, jobRun = 0;
+const jobQ = [];
+function runJob(fn) { return new Promise((res, rej) => { jobQ.push({fn, res, rej}); pumpJobs(); }); }   // at most 3 stills are made at once
+function pumpJobs() {
+  while (jobRun < 3 && jobQ.length) {
+    const j = jobQ.shift(); jobRun++;
+    Promise.resolve().then(j.fn).then(j.res, j.rej).finally(() => { jobRun--; pumpJobs(); });
+  }
+}
+function clearBooruUrls() {
+  booruToken++;
+  if (booruIO) { booruIO.disconnect(); booruIO = null; }
+  booruStates.forEach(st => { st.urls.forEach(u => URL.revokeObjectURL(u)); st.urls = []; st.on = false; });
+  booruStates = [];
+}
+function renderBooruPager(nav, pages) {
+  nav.replaceChildren(); nav.hidden = pages <= 1;
+  if (pages <= 1) return;
+  const go = p => { booruPage = p; renderBooru(false); $("#booruGrid").scrollIntoView({block:"start"}); };
+  const btn = (label, p, on, off) => h("button", {class:"pg" + (on ? " on" : ""), type:"button", disabled:off ? "" : false, onclick:() => go(p)}, label);
+  const nums = new Set([0, pages - 1]);
+  for (let k = booruPage - 2; k <= booruPage + 2; k++) if (k >= 0 && k < pages) nums.add(k);
+  nav.append(btn("‹", booruPage - 1, false, booruPage === 0));
+  let prev = -1;
+  [...nums].sort((a, b) => a - b).forEach(k => {
+    if (prev >= 0 && k - prev > 1) nav.append(h("span", {class:"na"}, "…"));
+    nav.append(btn(String(k + 1), k, k === booruPage, false)); prev = k;
+  });
+  nav.append(btn("›", booruPage + 1, false, booruPage >= pages - 1));
+}
+const folderSizeOf = (folder) => booruFiles.reduce((s, y) => s + (y.folder === folder ? booruSize(y) : 0), 0);
+function updateSelBar() {
+  const bar = $("#booruSelBar"); bar.hidden = !adminOn;
+  const n = booruSel.size;
+  $("#booruSelCount").textContent = n + (n === 1 ? " file selected" : " files selected");
+  $("#booruSelDelete").disabled = !n; $("#booruSelClear").disabled = !n;
+  $("#booruSelDelete").textContent = n ? "Delete " + n + " selected file" + (n === 1 ? "" : "s") : "Delete selected files";
+}
+function renderBooru(resetPage) {
+  clearBooruUrls();
+  booruFiles = booruFiles.filter(x => x.f || hasDetails(x.meta));   // an index whose details were all removed disappears
+  for (const p of [...booruSel]) if (!booruFiles.some(x => x.path === p && x.f)) booruSel.delete(p);
+  const q = $("#booruSearch").value.trim().toLowerCase(), type = $("#booruType").value, sort = $("#booruSort").value;
+  booruShown = booruFiles.filter(x => (type === "all" || x.kind === type) && (!q || booruHay(x).includes(q)));
+  const by = {
+    name: (a, b) => collator.compare(a.name, b.name),
+    folder: (a, b) => collator.compare(a.folder, b.folder) || collator.compare(a.name, b.name),
+    new: (a, b) => booruTime(b) - booruTime(a),
+    size: (a, b) => booruSize(b) - booruSize(a)
+  };
+  booruShown.sort(by[sort] || by.name);
+  const per = booruPer, pages = Math.max(1, Math.ceil(booruShown.length / per));
+  if (resetPage) booruPage = 0;
+  booruPage = Math.max(0, Math.min(booruPage, pages - 1));
+  const start = booruPage * per, slice = booruShown.slice(start, start + per);
+  const n = k => booruFiles.filter(x => x.kind === k).length, off = booruFiles.filter(x => !x.f).length;
+  $("#booruCount").textContent = booruFiles.length
+    ? booruShown.length + " shown · page " + (booruPage + 1) + " of " + pages + " · " + n("image") + " images, " + n("gif") + " GIFs, " + n("video") + " videos" + (booruRoot ? " · " + booruRoot : "") +
+      (adminOn ? " · total " + fmtSize(booruFiles.reduce((s, y) => s + booruSize(y), 0)) : "") +
+      (off ? " · " + off + " not connected (choose the media folder to reconnect)" : "")
+    : "Choose a folder of images, GIFs and videos";
+  renderBooruPager($("#booruPagerTop"), pages); renderBooruPager($("#booruPagerBottom"), pages);
+  updateSelBar();
+  const grid = $("#booruGrid"); grid.replaceChildren();
+  if (!booruFiles.length) {
+    grid.append(h("div", {class:"empty"}, h("h2", {}, "No folder chosen"),
+      h("p", {}, "Pick any folder containing images, GIFs or videos. Sub folders are included. Firefox asks again after a page reload. Items you tag are kept as empty indexes and reconnect when you choose the folder again."),
+      h("button", {class:"btn", type:"button", onclick:() => $("#booruPicker").click()}, "Choose media folder")));
+    return;
+  }
+  if (!booruShown.length) { grid.append(h("div", {class:"empty"}, h("h2", {}, "No matches"), h("p", {}, "Nothing matches this search or filter."))); return; }
+  const cards = new Map(), fsz = new Map();
+  booruIO = "IntersectionObserver" in window ? new IntersectionObserver(entries => {
+    for (const en of entries) { const c = cards.get(en.target); if (c) (en.isIntersecting ? c.load() : c.unload()); }
+  }, {rootMargin:"600px"}) : null;
+  slice.forEach((x, k) => {
+    const idx = start + k, missing = !x.f, isV = x.kind === "video" && !missing, isG = x.kind === "gif" && !missing;
+    const media = missing
+      ? (x.meta.thumb ? h("img", {class:"booru-media missing", alt:x.name, decoding:"async"}) : h("div", {class:"booru-media missing ph"}, "No preview"))
+      : isV ? h("video", {class:"booru-media", loop:"", playsinline:"", preload:"none"}) : h("img", {class:"booru-media", alt:x.name, decoding:"async"});
+    if (isV) media.muted = true;
+    let sizeInfo = null;
+    if (adminOn) {   // admin only: the file's size, and the total size of the folder it sits in
+      if (!fsz.has(x.folder)) fsz.set(x.folder, folderSizeOf(x.folder));
+      sizeInfo = h("div", {class:"bsize"}, "File " + fmtSize(booruSize(x)) + " · Folder " + fmtSize(fsz.get(x.folder)));
+    }
+    const card = h("button", {class:"booru-card" + (booruSel.has(x.path) ? " picked" : ""), type:"button", title:x.path, onclick:() => openBooru(idx)},
+      media, h("span", {class:"kind" + (missing ? " off" : "")}, missing ? "NOT CONNECTED" : x.kind === "gif" ? "GIF" : isV ? "VIDEO" : "IMG"),
+      h("div", {class:"booru-meta"}, x.name + (x.folder ? " · " + x.folder : ""), x.meta.artist ? h("div", {}, x.meta.artist) : null, sizeInfo));
+    if (adminOn && x.f) {   // admin only: a box to tick files for deletion
+      const box = h("span", {class:"selbox" + (booruSel.has(x.path) ? " on" : ""), role:"checkbox", "aria-checked":String(booruSel.has(x.path)), "aria-label":"Select " + x.name + " for deletion", title:"Select for deletion"}, booruSel.has(x.path) ? "✓" : "");
+      box.addEventListener("click", e => {
+        e.preventDefault(); e.stopPropagation();
+        const on = !booruSel.has(x.path);
+        if (on) booruSel.add(x.path); else booruSel.delete(x.path);
+        box.classList.toggle("on", on); box.textContent = on ? "✓" : ""; box.setAttribute("aria-checked", String(on)); card.classList.toggle("picked", on);
+        updateSelBar();
+      });
+      card.append(box);
+    }
+    const st = {urls:[], on:false}; booruStates.push(st);
+    const mk = b => { const u = URL.createObjectURL(b); st.urls.push(u); return u; };
+    const blob = () => x.f.slice(0, x.f.size, MIME[extOf(x.name)]);
+    let stillUrl = null, animUrl = null, vidUrl = null, hover = false;
+    const load = async () => {
+      if (st.on) return; st.on = true;
+      const tk = booruToken;
+      try {
+        if (missing) { if (x.meta.thumb) media.src = mk(x.meta.thumb); return; }
+        if (isG) {
+          if (x.still === undefined) { const r = await runJob(() => tk === booruToken ? gifStill(x.f) : undefined); if (r === undefined) { st.on = false; return; } x.still = r; }
+          if (!st.on || tk !== booruToken) return;
+          if (x.still) { stillUrl = mk(x.still); media.src = hover ? (animUrl = mk(blob())) : stillUrl; }
+          else media.src = mk(blob());   // no still could be made for this file: show it as it is
+        } else if (isV) {
+          if (x.poster === undefined) { const r = await runJob(() => tk === booruToken ? videoFrame(blob()) : undefined); if (r === undefined) { st.on = false; return; } x.poster = r || null; }
+          if (!st.on || tk !== booruToken) return;
+          if (x.poster) media.poster = mk(x.poster); else { media.preload = "metadata"; media.src = mk(blob()) + "#t=0.1"; }
+        } else media.src = mk(blob());
+      } catch (_) { st.on = false; }
+    };
+    const unload = () => {
+      if (!st.on) return; st.on = false;
+      st.urls.forEach(u => URL.revokeObjectURL(u)); st.urls = []; stillUrl = animUrl = vidUrl = null;
+      media.removeAttribute("src"); if (isV) { media.removeAttribute("poster"); media.load(); }
+    };
+    if (isG) {
+      const play = () => { hover = true; if (st.on && x.still) media.src = animUrl = animUrl || mk(blob()); };
+      const stop = () => { hover = false; if (st.on && x.still && stillUrl) media.src = stillUrl; };
+      card.addEventListener("mouseenter", play); card.addEventListener("mouseleave", stop);
+    }
+    if (isV) {
+      card.addEventListener("mouseenter", () => { if (!booruHover || !st.on) return; if (!media.getAttribute("src")) media.src = vidUrl = vidUrl || mk(blob()); media.play().catch(() => {}); });
+      card.addEventListener("mouseleave", () => { media.pause(); if (x.poster) { media.removeAttribute("src"); media.load(); } });
+    }
+    grid.append(card);
+    cards.set(card, {load, unload});
+    if (missing && !x.meta.thumb) return;
+    if (booruIO) booruIO.observe(card); else load();
+  });
+}
+/* Details for a booru item: same fields and shared presaved tags as manga, but searched only inside the gallery. */
+function booruFilter(v) {
+  $("#booruSearch").value = v; $("#booruType").value = "all"; booruIdx = -1; booruDirty = false;
+  closeBooruLightbox(); renderBooru(true);
+}
+function renderBooruInfo() {
+  const x = booruShown[booruIdx]; if (!x) return;
+  const m = x.meta, na = () => h("span", {class:"na"}, "N/A");
+  const chip = v => h("button", {class:"chip", type:"button", onclick:() => booruFilter(v)}, v);
+  const chips = list => list.length ? list.map(chip) : na();
+  const row = (label, ...c) => h("div", {class:"row"}, h("b", {}, label), h("span", {}, ...c));
+  booruEditing = false;
+  $("#booruInfo").replaceChildren(
+    h("h2", {class:"dtitle"}, x.name),
+    h("div", {class:"dartist"}, m.artist ? chip(m.artist) : "N/A", presetBar("artist", m)),
+    row("Group", m.group ? chip(m.group) : na(), presetBar("group", m)),
+    row("Type", m.type ? chip(m.type) : na(), presetBar("type", m)),
+    row("Language", m.language ? chip(m.language) : na(), presetBar("language", m)),
+    row("Series", m.series ? [chip(m.series), m.seriesNumber ? h("span", {class:"num"}, numLabel(m.seriesNumber)) : null] : na(), presetBar("series", m)),
+    row("Characters", chips(m.characters), presetBar("characters", m)),
+    row("Tags", chips(m.tags), presetBar("tags", m)),
+    row("Folder", x.folder ? x.folder : na()),
+    adminOn ? row("File size", x.f || x.meta.size ? fmtSize(booruSize(x)) : na()) : null,
+    adminOn ? row("Folder size", fmtSize(folderSizeOf(x.folder)) + " (" + booruFiles.filter(y => y.folder === x.folder).length + " files)") : null,
+    h("button", {class:"btn ghost small", type:"button", onclick:() => renderBooruForm(x)}, "Edit details"));
+}
+function renderBooruForm(x) {
+  const m = x.meta; booruEditing = true;
+  const text = (val, attrs = {}) => h("input", {type:"text", class:"inp", value:val || "", ...attrs});
+  const fld = (label, input, hint) => h("label", {class:"frow"}, h("span", {}, label), h("span", {}, input, hint ? h("span", {class:"hint"}, hint) : null));
+  const dl = (id, opts) => h("datalist", {id}, opts.map(o => h("option", {value:o})));
+  const seriesNames = [...new Set([...library.map(y => y.series), ...booruFiles.map(y => y.meta.series)].filter(Boolean))].sort(collator.compare);
+  const artist = text(m.artist), group = text(m.group);
+  const type = text(m.type, {list:"bTypeList", placeholder:"Image, GIF, Video, Artist CG…"});
+  const language = text(m.language, {list:"bLangList"});
+  const series = text(m.series, {list:"bSeriesList", placeholder:"Series title"});
+  const number = text(m.seriesNumber, {placeholder:"3, Vol. 3, Special…"});
+  const chars = text(m.characters.join(", ")), tags = text(m.tags.join(", "));
+  const toList = v => { const seen = new Set(); return v.split(/[,\n]/).map(t => t.trim()).filter(t => t && !seen.has(t.toLowerCase()) && seen.add(t.toLowerCase())); };
+  const save = async () => {
+    Object.assign(m, {artist:artist.value.trim(), group:group.value.trim(), type:type.value.trim(), language:language.value.trim(),
+      series:series.value.trim(), seriesNumber:number.value.trim(), characters:toList(chars.value), tags:toList(tags.value)});
+    try { await saveBooruMeta(m); booruDirty = true; toast("Saved"); } catch (err) { console.error(err); toast("Could not save changes."); }
+    renderBooruInfo();
+  };
+  $("#booruInfo").replaceChildren(
+    h("h2", {class:"dtitle"}, x.name),
+    fld("Artist", artist), fld("Group", group), fld("Type", type), fld("Language", language),
+    fld("Series", series, "Items with the same series title are easy to find together in the gallery search."),
+    fld("Number", number), fld("Characters", chars, "Separate with commas."), fld("Tags", tags, "Separate with commas."),
+    dl("bTypeList", ["Image","GIF","Video","Artist CG","Game CG","Image Set","Webtoon"]),
+    dl("bLangList", ["日本語","English","中文","한국어","Español","Français"]),
+    dl("bSeriesList", seriesNames),
+    h("div", {class:"fbtns"}, h("button", {class:"btn", type:"button", onclick:save}, "Save"), h("button", {class:"btn ghost", type:"button", onclick:renderBooruInfo}, "Cancel")));
+}
+
+function openBooru(idx) {
+  const x = booruShown[idx]; if (!x) return;
+  booruIdx = idx;
+  const lb = $("#booruLightbox"), im = $("#booruLarge"), vd = $("#booruVideo");
+  if (lbUrl) { URL.revokeObjectURL(lbUrl); lbUrl = null; }
+  const stopVideo = () => { vd.pause(); vd.hidden = true; vd.removeAttribute("src"); vd.load(); };
+  if (!x.f) {   // empty index: show the saved preview, details stay editable
+    stopVideo();
+    if (x.meta.thumb) { lbUrl = URL.createObjectURL(x.meta.thumb); im.hidden = false; im.src = lbUrl; im.alt = x.name; }
+    else { im.hidden = true; im.removeAttribute("src"); }
+    $("#booruCaption").textContent = x.path + " · not connected. Choose the media folder again to view the original. · " + (idx + 1) + " / " + booruShown.length;
+  } else {
+    lbUrl = URL.createObjectURL(x.f.slice(0, x.f.size, MIME[extOf(x.name)]));
+    if (x.kind === "video") { im.hidden = true; im.removeAttribute("src"); vd.hidden = false; vd.src = lbUrl; vd.play().catch(() => {}); }
+    else { stopVideo(); im.hidden = false; im.src = lbUrl; im.alt = x.name; }
+    $("#booruCaption").textContent = x.path + " · " + fmtSize(x.f.size) + " · " + (idx + 1) + " / " + booruShown.length;
+  }
+  renderBooruInfo();
+  $("#booruRename").hidden = $("#booruDelete").hidden = !(adminOn && x.f);
+  if (!lb.open) lb.showModal();
+}
+const stepBooru = d => { const n = booruIdx + d; if (n >= 0 && n < booruShown.length) openBooru(n); };
+function closeBooruLightbox() { const lb = $("#booruLightbox"); if (lb.open) lb.close(); }
+$("#booruLightbox").addEventListener("close", () => {
+  const vd = $("#booruVideo"); vd.pause(); vd.removeAttribute("src"); vd.load();
+  $("#booruLarge").removeAttribute("src");
+  if (lbUrl) { URL.revokeObjectURL(lbUrl); lbUrl = null; }
+  booruEditing = false;
+  if ($("#booruView").hidden) return;
+  // Follow the item you were looking at to its page, and refresh cards if its details changed.
+  const pg = booruIdx >= 0 ? Math.floor(booruIdx / booruPer) : booruPage;
+  if (booruDirty || pg !== booruPage) { booruPage = pg; booruDirty = false; renderBooru(false); }
+});
+$("#booruLightbox").addEventListener("keydown", e => {
+  if (isTyping(e.target)) return;
+  if (e.key === "ArrowLeft") { e.preventDefault(); stepBooru(-1); }
+  else if (e.key === "ArrowRight") { e.preventDefault(); stepBooru(1); }
+});
+$("#booruPrev").addEventListener("click", () => stepBooru(-1));
+$("#booruNext").addEventListener("click", () => stepBooru(1));
+$("#booruClose").addEventListener("click", closeBooruLightbox);
+async function showBooru() {
+  $("#libraryView").hidden = true; $("#detail").hidden = true; $("#reader").hidden = true; $("#booruView").hidden = false;
+  window.scrollTo(0, 0);
+  await booruReady;
+  renderBooru(false);
+}
+$("#booruTab").addEventListener("click", showBooru);
+$("#booruBack").addEventListener("click", () => { booruIdx = -1; booruDirty = false; closeBooruLightbox(); clearBooruUrls(); $("#booruView").hidden = true; $("#libraryView").hidden = false; render(); });
+$("#booruChoose").addEventListener("click", () => $("#booruPicker").click());
+$("#booruSettings").addEventListener("click", openSettings);
+async function loadBooruFiles(list) {
+  const picked = [...list].filter(f => MIME[extOf(f.name)]);
+  if (!picked.length) { toast("No images, GIFs or videos found in that folder."); return; }
+  try {
+    const saved = await loadBooruMeta(), seen = new Set();
+    booruSel.clear();
+    booruFiles = picked.map(f => {
+      const path = pathOf(f), parts = path.split("/").filter(Boolean), kind = kindOf(f);
+      const meta = saved.get(path) || ensureMeta({id:path});
+      Object.assign(meta, {name:f.name, kind, folder:parts.slice(1, -1).join("/"), size:f.size, mtime:f.lastModified || 0});
+      metaFile.set(meta, f); seen.add(path);
+      return {f, path, name:f.name, kind, folder:meta.folder, meta};
+    });
+    // Saved items whose file isn't in this folder stay as empty indexes.
+    let off = 0;
+    for (const [id, meta] of saved) if (!seen.has(id) && hasDetails(meta)) { booruFiles.push(indexItem(meta)); off++; }
+    booruRoot = (pathOf(picked[0]).split("/")[0]) || "";
+    renderBooru(true);
+    toast("Loaded " + picked.length + " files from " + (booruRoot || "folder") + (off ? " · " + off + " saved items not found in it" : ""));
+    // Give tagged items that have no preview yet one, so they still look right as empty indexes later.
+    for (const x of booruFiles.filter(y => y.f && !y.meta.thumb && hasDetails(y.meta)).slice(0, 300)) {
+      try { await saveBooruMeta(x.meta); } catch (_) {}
+    }
+  } catch (err) { console.error(err); toast("Could not load the folder: " + (err.message || err)); }
+}
+$("#booruPicker").addEventListener("change", e => { const l = [...e.target.files]; e.target.value = ""; loadBooruFiles(l); });
+let booruTimer;
+$("#booruSearch").addEventListener("input", () => { clearTimeout(booruTimer); booruTimer = setTimeout(() => renderBooru(true), 150); });
+$("#booruType").addEventListener("change", () => renderBooru(true));
+$("#booruSort").addEventListener("change", () => renderBooru(true));
+// Settings: how much loads at once
+$("#booruPer").value = booruPer; $("#booruHover").checked = booruHover;
+$("#booruPer").addEventListener("change", () => {
+  let v = parseInt($("#booruPer").value, 10); if (!(v >= 1)) v = 48;
+  v = Math.min(500, Math.max(1, v)); $("#booruPer").value = v; booruPer = v;
+  try { localStorage.setItem("manga-booru-perpage", String(v)); } catch (_) {}
+  if (!$("#booruView").hidden) renderBooru(true);
+});
+$("#booruHover").addEventListener("change", () => {
+  booruHover = $("#booruHover").checked;
+  try { localStorage.setItem("manga-booru-hover", booruHover ? "1" : "0"); } catch (_) {}
+});
+
+/* ── Auto-link: reconnect a typed/saved folder path with one press (no file explorer) ── */
+function probeMedia(url, isVid) {
+  return new Promise(res => {
+    let finished = false, el;
+    const fin = ok => {
+      if (finished) return; finished = true; clearTimeout(tm);
+      if (el) { el.onload = el.onerror = el.onloadedmetadata = null; if (isVid) { el.removeAttribute("src"); el.load(); } }
+      res(ok);
+    };
+    const tm = setTimeout(() => fin(false), 6000);
+    if (isVid) { el = document.createElement("video"); el.preload = "metadata"; el.muted = true; el.onloadedmetadata = () => fin(true); el.onerror = () => fin(false); el.src = url; }
+    else { el = new Image(); el.onload = () => fin(true); el.onerror = () => fin(false); el.src = url; }
+  });
+}
+const needLocal = () => { if (location.protocol === "file:") return false; toast("Auto-link needs this page opened as a local file (file://). Use the folder picker buttons instead."); return true; };
+
+async function autoLinkManga() {
+  if (FSA) {   // Chrome / Edge: a saved folder handle reconnects without the file explorer
+    const files = await adminReconnect("manga");
+    if (files && files.length) { await linkFolderFiles(files); return; }
+  }
+  if (needLocal()) return;
+  const cands = library.filter(m => m.linkedFolder && Array.isArray(m.pagePaths) && m.pagePaths.length);
+  if (!cands.length) { toast("No linked manga yet. Use “Link manga folder” once so the page addresses are saved."); return; }
+  pathBad.clear(); toast("Checking " + cands.length + " manga…");
+  const bad = []; let ok = 0, next = 0;
+  const worker = async () => {
+    for (;;) {
+      const m = cands[next++]; if (!m) return;
+      if (linkedFiles.has(m.id) || await probeMedia(pathUrl(m, 0), isVideoName(m.pagePaths[0]))) ok++;
+      else { pathBad.add(m.id); bad.push(m.title); }
+    }
+  };
+  await Promise.all([worker(), worker(), worker(), worker(), worker(), worker()]);
+  await render();
+  if (dm && !$("#detail").hidden) { const fresh = library.find(x => x.id === dm.id); if (fresh) { thumbUrls.clear(); dm = fresh; updateProgress(); renderThumbs(); } }
+  toast(ok + " of " + cands.length + " manga linked from the saved path" + (bad.length ? ". Not found: " + bad.slice(0, 3).join(", ") + (bad.length > 3 ? "…" : "") + ". Check the path (✎)." : "."));
+}
+function openAutoDlg() {
+  $("#autoTitle").textContent = "Auto-link manga folder";
+  $("#autoPath").value = pathBase;
+  $("#autoDlg").showModal(); $("#autoPath").focus();
+}
+async function autoGo() {
+  const v = $("#autoPath").value.trim();
+  try { localStorage.setItem("manga-auto-manga", "1"); localStorage.setItem("manga-pathbase", v); } catch (_) {}
+  $("#autoDlg").close();
+  pathBase = v; pathBad.clear(); $("#pathBase").value = v;
+  await autoLinkManga();
+}
+const autoSet = () => { try { return localStorage.getItem("manga-auto-manga") === "1"; } catch (_) { return false; } };
+$("#autoGo").addEventListener("click", autoGo);
+$("#autoPath").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); autoGo(); } });
+$("#autoClose").addEventListener("click", () => $("#autoDlg").close());
+$("#autoLinkBtn").addEventListener("click", () => (autoSet() || pathBase) ? autoLinkManga() : openAutoDlg());
+$("#autoPathBtn").addEventListener("click", openAutoDlg);
+
+/* ── Page width ── */
+let layoutPref = "fixed";
+try { layoutPref = localStorage.getItem("manga-layout") === "wide" ? "wide" : "fixed"; } catch (_) {}
+const applyLayout = v => { document.documentElement.dataset.layout = v === "wide" ? "wide" : "fixed"; };
+applyLayout(layoutPref); $("#layoutSel").value = layoutPref;
+$("#layoutSel").addEventListener("change", () => {
+  layoutPref = $("#layoutSel").value; applyLayout(layoutPref);
+  try { localStorage.setItem("manga-layout", layoutPref); } catch (_) {}
+});
+
+/* ── Admin mode: rename / delete / add linked files through the File System Access API (Chrome and Edge only) ── */
+const FSA = typeof window.showDirectoryPicker === "function";
+let adminOn = false;
+const NEED_ADMIN = "This file wasn’t opened with admin folder access. Use “Admin: open folder” first.";
+const tagFile = (f, dir, handle, path) => {
+  Object.defineProperty(f, "webkitRelativePath", {value:path, configurable:true});
+  f.handle = handle; f.directoryHandle = dir; return f;
+};
+const canEdit = f => !!(adminOn && f && f.handle && f.directoryHandle);
+async function scanDirHandle(dir, prefix, out) {
+  const entries = [];
+  for await (const [name, entry] of dir.entries()) entries.push([name, entry]);
+  const files = [];
+  for (const [name, entry] of entries) {
+    if (name.startsWith(".")) continue;
+    if (entry.kind === "directory") await scanDirHandle(entry, prefix + "/" + name, out);
+    else if (MIME[extOf(name)]) files.push([name, entry]);
+  }
+  const got = await Promise.all(files.map(async ([name, entry]) => tagFile(await entry.getFile(), dir, entry, prefix + "/" + name)));
+  for (const f of got) out.push(f);
+}
+async function adminScan(dir) { toast("Reading “" + dir.name + "”…"); const out = []; await scanDirHandle(dir, dir.name, out); return out; }
+// Folder handles are remembered in the browser so the next visit only needs a permission click, not the file explorer.
+async function saveHandle(kind, handle) { const db = await dbp, t = db.transaction("booru", "readwrite"); t.objectStore("booru").put({id:"__handle__:" + kind, handle}); await done(t); }
+async function loadHandle(kind) { const db = await dbp, r = await wrap(db.transaction("booru").objectStore("booru").get("__handle__:" + kind)); return r && r.handle || null; }
+async function handlePerm(dir, mode) {
+  try { const o = {mode}; return (await dir.queryPermission(o)) === "granted" || (await dir.requestPermission(o)) === "granted"; } catch (_) { return false; }
+}
+const ensureWrite = dir => handlePerm(dir, "readwrite");
+async function adminReconnect(kind) {
+  if (!FSA) return null;
+  let dir; try { dir = await loadHandle(kind); } catch (_) { return null; }
+  if (!dir || !(await handlePerm(dir, adminOn ? "readwrite" : "read"))) return null;
+  try { return await adminScan(dir); } catch (err) { console.error(err); return null; }
+}
+async function adminPick(kind) {
+  let dir;
+  try { dir = await window.showDirectoryPicker({mode:"readwrite", id:"mangalib-" + kind}); }
+  catch (err) { if (err.name !== "AbortError") toast("Could not open the folder: " + (err.message || err)); return null; }
+  try { await saveHandle(kind, dir); } catch (err) { console.warn("Could not remember the folder", err); }
+  try { return await adminScan(dir); } catch (err) { console.error(err); toast("Could not read the folder: " + (err.message || err)); return null; }
+}
+async function adminOpen(kind, e) {
+  let files = e && e.shiftKey ? null : await adminReconnect(kind);
+  if (!files) files = await adminPick(kind);
+  if (!files) return;
+  if (!files.length) { toast("No supported images or videos found in that folder."); return; }
+  if (kind === "manga") await linkFolderFiles(files); else loadBooruFiles(files);
+}
+async function fileExists(dir, name) {
+  try { await dir.getFileHandle(name); return true; }
+  catch (err) { if (err.name === "NotFoundError") return false; return true; }
+}
+const cleanName = (input, oldName) => {
+  let n = (input || "").trim().replace(/[\\/:*?"<>|]/g, "");
+  if (!n) return "";
+  if (!MIME[extOf(n)]) n += oldName.slice(oldName.lastIndexOf("."));
+  return n;
+};
+async function adminRename(f, newName) {
+  const dir = f.directoryHandle, fh = f.handle;
+  if (!(await ensureWrite(dir))) throw new Error("Write permission was not granted.");
+  if (await fileExists(dir, newName)) throw new Error("A file named “" + newName + "” already exists.");
+  const oldPath = pathOf(f), path = oldPath.slice(0, oldPath.lastIndexOf("/") + 1) + newName;
+  let nh = fh;
+  try { if (typeof fh.move !== "function") throw new Error("move unsupported"); await fh.move(newName); }
+  catch (_) {   // copy to the new name, then remove the old file
+    nh = await dir.getFileHandle(newName, {create:true});
+    const w = await nh.createWritable();
+    try { await w.write(f); await w.close(); }
+    catch (err) { try { await w.abort(); } catch (__) {} try { await dir.removeEntry(newName); } catch (__) {} throw err; }
+    await dir.removeEntry(f.name);
+  }
+  return tagFile(await nh.getFile(), dir, nh, path);
+}
+async function adminDelete(f) {
+  if (!(await ensureWrite(f.directoryHandle))) throw new Error("Write permission was not granted.");
+  await f.directoryHandle.removeEntry(f.name);
+}
+// Keep the library entry in step with the files on disk.
+async function syncManga(m, arr) {
+  arr.sort((a, b) => collator.compare(pathOf(a), pathOf(b)));
+  linkedFiles.set(m.id, arr);
+  m.pagePaths = arr.map(pathOf); m.pageCount = arr.length;
+  m.lastPage = Math.max(0, Math.min(m.lastPage || 0, arr.length - 1));
+  await saveManga(m);
+  thumbUrls.forEach(u => { if (typeof u === "string" && u.startsWith("blob:")) URL.revokeObjectURL(u); }); thumbUrls.clear();
+  if (dm && dm.id === m.id) { updateProgress(); renderThumbs(); }
+  render();
+}
+
+function updateAdminUI() {
+  for (const id of ["rRename", "rDelete", "gAdd"]) $("#" + id).hidden = !adminOn;
+  { const bx = booruShown && booruShown[booruIdx]; $("#booruRename").hidden = $("#booruDelete").hidden = !(adminOn && bx && bx.f); }
+  $("#booruSelBar").hidden = !adminOn;
+  for (const id of ["adminOpenBtn", "booruAdminOpen"]) $("#" + id).hidden = !adminOn;
+  for (const id of ["adminBtn", "booruAdmin", "setAdmin"]) $("#" + id).textContent = adminOn ? "Admin mode: on" : "Admin mode: off";
+}
+function refreshAdminViews() {   // admin-only details (sizes, selection boxes) appear or disappear straight away
+  if (!adminOn) booruSel.clear();
+  try {
+    if (!$("#booruView").hidden) { if ($("#booruLightbox").open) { renderBooruInfo(); $("#booruRename").hidden = $("#booruDelete").hidden = !(adminOn && booruShown[booruIdx] && booruShown[booruIdx].f); } renderBooru(false); }
+    else if (!$("#detail").hidden) { if (dm && !editing) renderInfo(); }
+    else if (!$("#libraryView").hidden) renderShelf();
+  } catch (err) { console.error(err); }
+}
+function toggleAdmin() {
+  if (adminOn) { adminOn = false; updateAdminUI(); refreshAdminViews(); toast("Admin mode off."); return; }
+  if (!FSA) { toast("Admin mode needs the File System Access API, which Firefox doesn’t support. Open this page in Chrome or Edge."); return; }
+  $("#adminPass").value = ""; $("#adminDlg").showModal(); $("#adminPass").focus();
+}
+function adminUnlock() {
+  if ($("#adminPass").value !== WIPE_PASSWORD) { toast("Incorrect password."); $("#adminPass").value = ""; $("#adminPass").focus(); return; }
+  $("#adminDlg").close(); adminOn = true; updateAdminUI(); refreshAdminViews();
+  toast("Admin mode on. Use “Admin: open folder” to give this page write access to a folder.");
+}
+$("#adminGo").addEventListener("click", adminUnlock);
+$("#adminPass").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); adminUnlock(); } });
+$("#adminCancel").addEventListener("click", () => $("#adminDlg").close());
+for (const id of ["adminBtn", "booruAdmin", "setAdmin"]) $("#" + id).addEventListener("click", toggleAdmin);
+$("#adminOpenBtn").addEventListener("click", e => adminOpen("manga", e));
+$("#booruAdminOpen").addEventListener("click", e => adminOpen("booru", e));
+
+// Reader: rename / delete the file of the page being read
+$("#rRename").addEventListener("click", async e => {
+  e.stopPropagation(); if (!cur) return;
+  const m = cur, arr = linkedFiles.get(m.id), f = arr && arr[actualIndex(m, m.lastPage)];
+  if (!canEdit(f)) { toast(NEED_ADMIN); return; }
+  const input = prompt("New file name for this page:", f.name); if (input == null) return;
+  const nn = cleanName(input, f.name); if (!nn || nn === f.name) return;
+  try {
+    const nf = await adminRename(f, nn);
+    arr[arr.indexOf(f)] = nf;
+    await syncManga(m, arr);
+    await go(actualIndex(m, arr.indexOf(nf)));
+    toast("Renamed to " + nn);
+  } catch (err) { console.error(err); toast("Rename failed: " + (err.message || err)); }
+});
+$("#rDelete").addEventListener("click", async e => {
+  e.stopPropagation(); if (!cur) return;
+  const m = cur, arr = linkedFiles.get(m.id), f = arr && arr[actualIndex(m, m.lastPage)];
+  if (!canEdit(f)) { toast(NEED_ADMIN); return; }
+  if (!confirm("Delete “" + f.name + "” from your disk? This can’t be undone.")) return;
+  try {
+    await adminDelete(f);
+    arr.splice(arr.indexOf(f), 1);
+    await syncManga(m, arr);
+    if (!m.pageCount) { closeReader(); toast("That was the last page file in the folder."); return; }
+    await go(Math.min(m.lastPage, m.pageCount - 1));
+    toast("Deleted " + f.name);
+  } catch (err) { console.error(err); toast("Delete failed: " + (err.message || err)); }
+});
+// Detail page: copy extra files into the manga's folder
+$("#gAdd").addEventListener("click", async () => {
+  if (!dm) return;
+  const m = dm, arr = linkedFiles.get(m.id), base = arr && arr[0];
+  if (!canEdit(base)) { toast(NEED_ADMIN); return; }
+  const ext = k => Object.keys(MIME).filter(x => MIME[x].startsWith(k)).map(x => "." + x);
+  let picks;
+  try { picks = await window.showOpenFilePicker({multiple:true, types:[{description:"Images and videos", accept:{"image/*":ext("image/"), "video/*":ext("video/")}}]}); }
+  catch (_) { return; }
+  try {
+    const dir = base.directoryHandle;
+    if (!(await ensureWrite(dir))) throw new Error("Write permission was not granted.");
+    const basePath = pathOf(base), prefix = basePath.slice(0, basePath.lastIndexOf("/") + 1);
+    let added = 0;
+    for (const ph of picks) {
+      const src = await ph.getFile(); let name = src.name, k = 1;
+      while (await fileExists(dir, name)) { const dot = src.name.lastIndexOf("."); name = src.name.slice(0, dot) + " (" + (++k) + ")" + src.name.slice(dot); }
+      const nh = await dir.getFileHandle(name, {create:true}), w = await nh.createWritable();
+      await w.write(src); await w.close();
+      arr.push(tagFile(await nh.getFile(), dir, nh, prefix + name)); added++;
+    }
+    await syncManga(m, arr);
+    toast("Added " + added + (added === 1 ? " file" : " files") + " to the folder.");
+  } catch (err) { console.error(err); toast("Could not add files: " + (err.message || err)); }
+});
+// Booru viewer: rename / delete the file being viewed
+$("#booruRename").addEventListener("click", async () => {
+  const x = booruShown[booruIdx]; if (!x) return;
+  if (!canEdit(x.f)) { toast(NEED_ADMIN); return; }
+  const input = prompt("New file name:", x.f.name); if (input == null) return;
+  const nn = cleanName(input, x.f.name); if (!nn || nn === x.f.name) return;
+  try {
+    const oldId = x.path, nf = await adminRename(x.f, nn);
+    x.f = nf; x.path = pathOf(nf); x.name = nf.name; x.still = undefined; x.poster = undefined;
+    if (booruSel.delete(oldId)) booruSel.add(x.path);
+    if (x.meta) {   // saved details follow the file to its new name
+      const had = hasDetails(x.meta);
+      await deleteBooruMeta(oldId);
+      Object.assign(x.meta, {id:x.path, name:nf.name, size:nf.size, mtime:nf.lastModified || 0}); metaFile.set(x.meta, nf);
+      if (had) await saveBooruMeta(x.meta);
+    }
+    renderBooru();
+    const at = booruShown.indexOf(x); if (at >= 0) openBooru(at);
+    toast("Renamed to " + nn);
+  } catch (err) { console.error(err); toast("Rename failed: " + (err.message || err)); }
+});
+$("#booruDelete").addEventListener("click", async () => {
+  const x = booruShown[booruIdx]; if (!x) return;
+  if (!canEdit(x.f)) { toast(NEED_ADMIN); return; }
+  if (!confirm("Delete “" + x.f.name + "” from your disk? This can’t be undone.")) return;
+  try {
+    await adminDelete(x.f);
+    await deleteBooruMeta(x.path); booruSel.delete(x.path);
+    const at = booruIdx;
+    booruFiles = booruFiles.filter(y => y !== x);
+    renderBooru();
+    if (!booruShown.length) closeBooruLightbox(); else openBooru(Math.min(at, booruShown.length - 1));
+    toast("Deleted " + x.f.name);
+  } catch (err) { console.error(err); toast("Delete failed: " + (err.message || err)); }
+});
+
+// Booru gallery (admin): delete every ticked file from disk
+$("#booruSelPage").addEventListener("click", () => {
+  const start = booruPage * booruPer;
+  booruShown.slice(start, start + booruPer).forEach(x => { if (x.f) booruSel.add(x.path); });
+  renderBooru(false);
+});
+$("#booruSelClear").addEventListener("click", () => { booruSel.clear(); renderBooru(false); });
+$("#booruSelDelete").addEventListener("click", async () => {
+  if (!adminOn || !booruSel.size) return;
+  const items = booruFiles.filter(x => x.f && booruSel.has(x.path));
+  if (!items.length) { booruSel.clear(); updateSelBar(); return; }
+  const blocked = items.filter(x => !canEdit(x.f)), todo = items.filter(x => canEdit(x.f));
+  if (!todo.length) { toast(NEED_ADMIN); return; }
+  if (!confirm("Delete " + todo.length + " selected file" + (todo.length === 1 ? "" : "s") + " from your disk? This can’t be undone." +
+      (blocked.length ? "\n\n" + blocked.length + " selected file" + (blocked.length === 1 ? " was" : "s were") + " not opened with admin folder access and will be left alone." : ""))) return;
+  let ok = 0, failed = 0, lastErr = "";
+  for (const x of todo) {
+    try {
+      await adminDelete(x.f);
+      await deleteBooruMeta(x.path);
+      booruSel.delete(x.path);
+      booruFiles = booruFiles.filter(y => y !== x); ok++;
+    } catch (err) { console.error(err); failed++; lastErr = err.message || String(err); }
+  }
+  renderBooru(false);
+  toast("Deleted " + ok + (ok === 1 ? " file" : " files") + (failed ? " · " + failed + " failed (" + lastErr + ")" : "") + (blocked.length ? " · " + blocked.length + " skipped (no admin access)" : ""));
+});
+updateAdminUI();
+
+/* ── Delete all saved data (password protected) ── */
+$("#pathBase").value = pathBase;
+$("#pathSave").addEventListener("click", () => {
+  pathBase = $("#pathBase").value.trim(); pathBad.clear();
+  try { localStorage.setItem("manga-pathbase", pathBase); } catch (_) {}
+  toast(location.protocol === "file:" ? "Folder path saved." : "Saved, but it only works when this page is opened as a local file (file://).");
+  if (dm && !$("#detail").hidden) { thumbUrls.clear(); renderThumbs(); }
+});
+const WIPE_PASSWORD = "1WeakPassword!";
+$("#wipeBtn").addEventListener("click", () => { $("#wipePass").value = ""; $("#wipeDlg").showModal(); $("#wipePass").focus(); });
+$("#wipeCancel").addEventListener("click", () => $("#wipeDlg").close());
+async function wipeAll() {
+  if ($("#wipePass").value !== WIPE_PASSWORD) { toast("Incorrect password."); $("#wipePass").value = ""; $("#wipePass").focus(); return; }
+  try {
+    const db = await dbp, t = db.transaction(["manga", "pages", "booru"], "readwrite");
+    t.objectStore("manga").clear(); t.objectStore("pages").clear(); t.objectStore("booru").clear();
+    await done(t);
+    linkedFiles.clear(); booruFiles = [];
+    for (const k of ["manga-source", "manga-sort", "manga-rtl", "manga-presets", "manga-keybinds", "manga-pathbase", "manga-booru-perpage", "manga-booru-hover", "manga-booru-base", "manga-auto-manga", "manga-auto-booru", "manga-layout"]) { try { localStorage.removeItem(k); } catch (_) {} }
+    $("#wipeDlg").close();
+    toast("All saved data deleted.");
+    setTimeout(() => location.reload(), 700);
+  } catch (err) { console.error(err); toast("Could not delete the data: " + (err.message || err)); }
+}
+$("#wipeGo").addEventListener("click", wipeAll);
+$("#wipePass").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); wipeAll(); } });
 /* ── Detail page: info, tags, page gallery, related folders ── */
 let dm = null, thumbPage = 0, thumbToken = 0, detailCoverUrl = null, relUrls = [], coverMode = false;
 // Pages are stored in import order; "reversed" flips the order they are shown and read in.
@@ -834,7 +1834,7 @@ function filterBy(text) {   // clicking a tag searches the whole library for it
 }
 function updateProgress() {
   if (!dm) return;
-  $("#dProgress").textContent = dm.lastPage > 0 ? "Continue from page " + (dm.lastPage + 1) + " of " + dm.pageCount : dm.pageCount + (dm.pageCount === 1 ? " page" : " pages");
+  $("#dProgress").textContent = (dm.lastPage > 0 ? "Continue from page " + (dm.lastPage + 1) + " of " + dm.pageCount : dm.pageCount + (dm.pageCount === 1 ? " page" : " pages")) + " · " + storageLabel(dm);
 }
 $("#dBack").addEventListener("click", showLibrary);
 $("#dCover").addEventListener("click", () => dm && openManga(dm));
@@ -854,6 +1854,8 @@ function renderInfo() {
     row("Characters", chips(m.characters), presetBar("characters")),
     row("Tags", chips(m.tags), presetBar("tags")),
     row("Read from", m.source ? chip(m.source) : na()),
+    m.nested ? row("Folder layout", h("button", {class:"chip", type:"button", title:"Pages were found inside a sub folder of this manga's folder", onclick:() => filterBy(NESTED_TAG)}, "Nested folder")) : null,
+    adminOn ? row("Folder size", mangaSizeLabel(m)) : null,
     h("div", {class:"ddate"}, fmtDate(m.date)),
     h("button", {class:"btn ghost small", id:"dEdit", type:"button", onclick:renderForm}, "Edit details")
   );
@@ -923,10 +1925,20 @@ async function makeThumb(blob) {
 }
 async function getThumb(m, i) {
   if (thumbUrls.has(i)) return thumbUrls.get(i);
-  const db = await dbp;
-  const rec = await wrap(db.transaction("pages").objectStore("pages").get([m.id, i]));
-  if (!rec) return null;
-  const url = await makeThumb(rec.blob);
+  let blob;
+  const linked = linkedFile(m,i);
+  if (linked) blob = linked.slice(0,linked.size,MIME[extOf(linked.name)]);
+  else if (m.linkedFolder) {   // saved-path mode: let the <img> load the file address directly
+    if (!pathReady(m) || isVideoName(m.pagePaths[i])) return null;
+    const pu = pathUrl(m, i); if (pu) thumbUrls.set(i, pu);
+    return pu;
+  } else {
+    const db = await dbp;
+    const rec = await wrap(db.transaction("pages").objectStore("pages").get([m.id, i]));
+    if (!rec) return null;
+    blob = rec.blob;
+  }
+  const url = await makeThumb(blob);
   if (!dm || dm.id !== m.id) { if (url) URL.revokeObjectURL(url); return null; }
   thumbUrls.set(i, url);
   return url;
@@ -939,8 +1951,17 @@ async function renderThumbs() {
   const start = thumbPage * THUMBS_PER_PAGE, end = Math.min(n, start + THUMBS_PER_PAGE);
   const grid = $("#thumbs"), cells = [];
   grid.replaceChildren();
+  if (isUnlinked(m)) {   // linked folders are only readable after the folder is picked again in this session
+    $("#pager").hidden = true;
+    grid.append(h("div", {class:"empty", style:"grid-column:1/-1;margin:16px auto"},
+      h("h2", {}, "Folder not connected"),
+      h("p", {}, "This manga reads its pages from your original folder, and Firefox forgets folder access when the page closes. Pick the parent folder (or this manga’s folder) again, or save the folder’s location in Settings (works when this page is opened as a local file)."),
+      h("button", {class:"btn", type:"button", onclick:() => $("#linkPicker").click()}, "Link manga folder")));
+    return;
+  }
   for (let i = start; i < end; i++) {
     const im = h("img", {alt:"Page " + (i + 1), decoding:"async"});
+    im.addEventListener("error", () => { if (!linkedFiles.has(m.id) && pathReady(m)) notePathFail(); });
     grid.append(h("button", {class:"thumb", type:"button", title:"Page " + (i + 1), onclick:() => coverMode ? chooseCover(i) : openManga(m, i)}, im, h("span", {class:"tn"}, String(i + 1))));
     cells.push([actualIndex(m, i), im]);
   }
@@ -982,10 +2003,18 @@ function refreshDetailCover() {
 }
 // Use one stored page as the folder's cover.
 async function setCoverFromPage(m, idx, custom) {
-  const db = await dbp;
-  const rec = await wrap(db.transaction("pages").objectStore("pages").get([m.id, idx]));
-  if (!rec) return false;
-  m.cover = rec.blob.type.startsWith("video/") ? ((await videoFrame(rec.blob)) || await placeholderCover()) : rec.blob;
+  let blob;
+  const f = linkedFile(m,idx);
+  if (f) blob = f.slice(0,f.size,MIME[extOf(f.name)]);
+  else if (m.linkedFolder) throw new Error("Pick the folder with “Link manga folder” to change the cover (a saved path isn’t enough).");
+  else {
+    const db = await dbp;
+    const rec = await wrap(db.transaction("pages").objectStore("pages").get([m.id, idx]));
+    if (!rec) return false;
+    blob = rec.blob;
+  }
+  if (!blob) return false;
+  m.cover = blob.type.startsWith("video/") ? ((await videoFrame(blob)) || await placeholderCover()) : blob;
   m.customCover = custom;
   await saveManga(m);
   return true;
@@ -995,7 +2024,7 @@ async function chooseCover(i) {
   coverMode = false; updateGalleryTools();
   try {
     if (await setCoverFromPage(m, actualIndex(m, i), true)) { refreshDetailCover(); toast("Cover set to page " + (i + 1)); }
-  } catch (err) { console.error(err); toast("Could not change the cover."); }
+  } catch (err) { console.error(err); toast((err && err.message) || "Could not change the cover."); }
 }
 async function toggleReverse() {
   const m = dm; if (!m) return;
@@ -1160,6 +2189,7 @@ try { rtl.checked = localStorage.getItem("manga-rtl") !== "0"; } catch (_) { rtl
 rtl.addEventListener("change", () => { try { localStorage.setItem("manga-rtl", rtl.checked ? "1" : "0"); } catch (_) {} });
 
 async function openManga(m, start) {
+  if (isUnlinked(m)) { toast("Link the manga folder again first — Firefox forgets folder access when the page closes."); return; }
   resetZoom();
   cur = m; $("#reader").hidden = false; $("#reader").classList.remove("bare");
   $("#rtitle").textContent = m.title; document.body.style.overflow = "hidden";
@@ -1170,18 +2200,31 @@ async function go(i) {
   if (i < 0) return;
   if (i >= cur.pageCount) { toast("End of ‘" + cur.title + "’"); return; }
   const token = ++navToken;
-  const db = await dbp;
-  const rec = await wrap(db.transaction("pages").objectStore("pages").get([cur.id, actualIndex(cur, i)]));
-  if (token !== navToken || !rec) return;
-  const url = URL.createObjectURL(rec.blob);
-  if (rec.blob.type.startsWith("video/")) {
+  let blob = null, url = null, isVid = false, fromPath = false;
+  const sourceFile = linkedFile(cur,actualIndex(cur,i));
+  if (sourceFile) blob = sourceFile.slice(0,sourceFile.size,MIME[extOf(sourceFile.name)]);
+  else if (cur.linkedFolder) {
+    if (!pathReady(cur)) { toast("Link the manga folder again first."); return; }
+    url = pathUrl(cur, actualIndex(cur, i)); fromPath = true;
+    isVid = isVideoName(cur.pagePaths[actualIndex(cur, i)]);
+  } else {
+    const db = await dbp;
+    const rec = await wrap(db.transaction("pages").objectStore("pages").get([cur.id, actualIndex(cur, i)]));
+    if (!rec) { toast("Page " + (i + 1) + " could not be found. Try linking the folder again."); return; }
+    blob = rec.blob;
+  }
+  if (token !== navToken || (!blob && !url)) return;
+  if (blob) { url = URL.createObjectURL(blob); isVid = blob.type.startsWith("video/"); }
+  if (isVid) {
     img.onload = null; img.hidden = true; img.removeAttribute("src");
     video.hidden = false; page = video;
+    video.onerror = fromPath ? notePathFail : null;
     video.onloadedmetadata = resetZoom; video.src = url;
     video.play().catch(() => {});
   } else {
     video.onloadedmetadata = null; video.pause(); video.hidden = true; video.removeAttribute("src"); video.load();
     img.hidden = false; page = img;
+    img.onerror = fromPath ? notePathFail : null;
     img.onload = resetZoom; img.src = url; img.alt = "Page " + (i + 1);
   }
   resetZoom();
@@ -1208,7 +2251,7 @@ $("#rCover").addEventListener("click", async e => {
   const m = cur;
   try {
     if (await setCoverFromPage(m, actualIndex(m, m.lastPage), true)) { if (dm === m) refreshDetailCover(); toast("Cover set to page " + (m.lastPage + 1)); }
-  } catch (err) { console.error(err); toast("Could not change the cover."); }
+  } catch (err) { console.error(err); toast((err && err.message) || "Could not change the cover."); }
 });
 $("#stage").addEventListener("click", e => {
   if (e.target === img || e.target === video) return;
@@ -1243,15 +2286,15 @@ function presetButton(p, onclick, applied) {
   return h("button", {class:"preset" + (applied ? " done" : ""), type:"button", style:"background:" + c + ";color:" + fgFor(c),
     title:(PFIELDS[p.field]) + ": " + p.value + (applied ? " (already applied)" : ""), onclick}, (applied ? "✓ " : "") + (p.label || p.value));
 }
-function presetBar(field) {
+function presetBar(field, tgt) {   // tgt: a booru item's details; omitted for the open manga
   const matching = presets.filter(p => p.field === field);
   return h("span", {class:"presets"},
-    matching.map(p => presetButton(p, () => applyPreset(p), presetApplied(dm, p))),
+    matching.map(p => presetButton(p, () => applyPreset(p, tgt), presetApplied(tgt || dm, p))),
     h("button", {class:"preset add", type:"button", title:"Create a presaved " + PFIELDS[field].toLowerCase(), onclick:() => openPresetDlg(field)}, matching.length ? "+" : "+ Presave"));
 }
-async function applyPreset(p) {
-  const m = dm; if (!m) return;
-  if (editing) { toast("Save or cancel your edits first."); return; }
+async function applyPreset(p, tgt) {
+  const m = tgt || dm; if (!m) return;
+  if (tgt ? booruEditing : editing) { toast("Save or cancel your edits first."); return; }
   const v = p.value.trim();
   const wasApplied = presetApplied(m, p);
   if (p.field === "tags" || p.field === "characters") {
@@ -1264,8 +2307,9 @@ async function applyPreset(p) {
   } else {
     m[p.field] = wasApplied ? "" : v;
   }
-  try { await saveManga(m); } catch (err) { console.error(err); toast("Could not save."); return; }
-  if (!$("#detail").hidden) { renderInfo(); renderRelated(); }
+  try { await (tgt ? saveBooruMeta(m) : saveManga(m)); } catch (err) { console.error(err); toast("Could not save."); return; }
+  if (tgt) { booruDirty = true; renderBooruInfo(); }
+  else if (!$("#detail").hidden) { renderInfo(); renderRelated(); }
   toast((wasApplied ? "Removed “" : "Added “") + v + "” (" + PFIELDS[p.field].toLowerCase() + ")");
 }
 
@@ -1305,7 +2349,7 @@ $("#pSave").addEventListener("click", () => {
 });
 $("#pCancel").addEventListener("click", () => { editingPreset = null; renderPresetDlg(); });
 $("#presetClose").addEventListener("click", () => presetDlg.close());
-presetDlg.addEventListener("close", () => { if (dm && !$("#detail").hidden && !editing) renderInfo(); });
+presetDlg.addEventListener("close", () => { if (dm && !$("#detail").hidden && !editing) renderInfo(); if ($("#booruLightbox").open && !booruEditing) renderBooruInfo(); });
 
 /* ── Keybinds ──
    Every action below is "clicked" by its key. Keys are stored as e.g. "Space", "e", "Ctrl+e", "ArrowLeft". */
@@ -1442,7 +2486,7 @@ document.addEventListener("keydown", e => {
 
 document.addEventListener("keydown", e => {
   if (recording || e.defaultPrevented || e.isComposing) return;
-  if (document.querySelector("dialog[open]") || isTyping(e.target)) return;
+  if (document.querySelector("dialog[open]") || isTyping(e.target) || !$("#booruView").hidden) return;
   const k = normKey(e); if (!k) return;
   const screen = !$("#reader").hidden ? "reader" : !$("#detail").hidden ? "detail" : "library";
   for (const a of allActions()) {
